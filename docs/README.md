@@ -36,6 +36,16 @@
 | [07-testing-and-quality.md](07-testing-and-quality.md) | 测试矩阵和质量门禁 | 开发、测试 |
 | [08-risks-and-decisions.md](08-risks-and-decisions.md) | 风险、假设及架构决策记录 | 全员 |
 | [09-backlog.md](09-backlog.md) | Epic、用户故事、优先级和验收 | 产品、开发、测试 |
+| [10-ui-design.md](10-ui-design.md) | 视觉方向、页面规范、组件与交互基线 | 产品、设计、客户端 |
+
+首轮可交互视觉稿见 [ui-prototype.html](ui-prototype.html)，可直接在桌面或移动浏览器中打开评审。
+
+当前 Android UI 已在根目录 `app` 模块落地。使用 JDK 17 与已安装的 Android SDK，可执行：
+
+```powershell
+.\gradlew.bat :app:assembleDebug
+.\gradlew.bat :app:testDebugUnitTest :app:lintDebug
+```
 
 建议首次按表格顺序阅读。实施过程中以 PRD 的范围为准，以 Backlog 的验收标准为交付依据。
 

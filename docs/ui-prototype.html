@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>XStar Guitar UI Prototype</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --canvas: #090b13;
+      --surface: #121621;
+      --surface-raised: #181d2a;
+      --muted-surface: #202536;
+      --ink: #f4f5fb;
+      --muted: #949caf;
+      --brand: #886cff;
+      --brand-strong: #b9aaff;
+      --brand-soft: rgba(136, 108, 255, .16);
+      --steady: #54d7c4;
+      --steady-soft: rgba(84, 215, 196, .14);
+      --attention: #ffb454;
+      --outline: rgba(213, 220, 255, .12);
+      --panel-warm: rgba(136, 108, 255, .1);
+      --panel-cool: rgba(84, 215, 196, .1);
+      --hero-ink: #f8f8ff;
+      --shadow: 0 24px 70px rgba(0, 0, 0, .28);
+      --glow-a: rgba(119, 76, 255, .2);
+      --glow-b: rgba(22, 200, 190, .12);
+    }
+    body[data-theme="wood"] {
+      color-scheme: light; --canvas:#f3efe8; --surface:#fffdf8; --surface-raised:#fffaf1; --muted-surface:#e8e1d7;
+      --ink:#1b211d; --muted:#687169; --brand:#a14e2d; --brand-strong:#74361f; --brand-soft:rgba(161,78,45,.14);
+      --steady:#147d73; --steady-soft:rgba(20,125,115,.13); --attention:#b76a08; --outline:rgba(63,52,42,.16);
+      --panel-warm:rgba(161,78,45,.09); --panel-cool:rgba(20,125,115,.09); --hero-ink:#fffdf7;
+      --shadow:0 18px 50px rgba(49,40,30,.1); --glow-a:rgba(155,75,44,.12); --glow-b:rgba(20,125,115,.08);
+    }
+    body[data-theme="glacier"] {
+      color-scheme: light; --canvas:#eef3f7; --surface:#fbfdff; --surface-raised:#ffffff; --muted-surface:#e3ebf1;
+      --ink:#14202a; --muted:#647585; --brand:#087fa7; --brand-strong:#075b7a; --brand-soft:rgba(8,127,167,.13);
+      --steady:#147d73; --steady-soft:rgba(20,125,115,.12); --attention:#a86208; --outline:rgba(35,67,87,.14);
+      --panel-warm:rgba(8,127,167,.08); --panel-cool:rgba(20,125,115,.08); --hero-ink:#f7fcff;
+      --shadow:0 20px 55px rgba(44,76,96,.1); --glow-a:rgba(31,161,207,.14); --glow-b:rgba(47,201,181,.1);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 4%, var(--glow-a), transparent 28rem),
+        radial-gradient(circle at 92% 65%, var(--glow-b), transparent 30rem),
+        var(--canvas);
+      background-attachment: fixed;
+      font-family: "Noto Sans SC", "Microsoft YaHei UI", sans-serif;
+    }
+    button, input { font: inherit; }
+    button { color: inherit; }
+    body.drawer-open { overflow: hidden; }
+    .app { min-height: 100vh; max-width: 1440px; margin: auto; }
+    .nav-button {
+      width: 100%; min-height: 68px; border: 1px solid transparent; border-radius: 18px;
+      background: transparent; color: var(--muted); cursor: pointer;
+      display: grid; grid-template-columns: 42px 1fr auto; align-items: center; gap: 10px; padding: 10px 14px;
+      text-align: left;
+    }
+    .nav-button .icon { width: 40px; height: 40px; border-radius: 13px; background: var(--muted-surface); display: grid; place-items: center; font-size: 19px; line-height: 1; }
+    .nav-copy strong, .nav-copy small { display: block; }
+    .nav-copy strong { color: var(--ink); font-size: 15px; }
+    .nav-copy small { margin-top: 2px; color: var(--muted); font-size: 12px; }
+    .current-label { visibility: hidden; color: var(--brand-strong); font-size: 11px; font-weight: 750; }
+    .nav-button.active { background: var(--brand-soft); border-color: rgba(155, 75, 44, .28); }
+    .nav-button.active .icon { background: var(--brand); color: #fff; }
+    .nav-button.active .current-label { visibility: visible; }
+    .drawer-backdrop {
+      position: fixed; inset: 0; z-index: 20; border: 0; padding: 0;
+      background: rgba(16, 20, 17, .42); opacity: 0; visibility: hidden;
+      transition: opacity .2s ease, visibility .2s;
+    }
+    .drawer {
+      position: fixed; inset: 0 0 0 auto; z-index: 21; width: min(82vw, 400px);
+      padding: max(22px, env(safe-area-inset-top)) 18px max(22px, env(safe-area-inset-bottom));
+      background: var(--surface); box-shadow: -24px 0 60px rgba(27, 33, 29, .18);
+      transform: translateX(102%); transition: transform .24s ease-out;
+      display: flex; flex-direction: column; overflow-y: auto;
+    }
+    body.drawer-open .drawer-backdrop { opacity: 1; visibility: visible; }
+    body.drawer-open .drawer { transform: translateX(0); }
+    .drawer-header { display: flex; align-items: center; justify-content: space-between; padding: 2px 2px 22px; }
+    .brand-lockup { display: flex; align-items: center; gap: 12px; }
+    .brand-mark { width: 46px; height: 46px; border-radius: 16px 12px 16px 12px; background: var(--ink); color: var(--surface); display: grid; place-items: center; font-weight: 800; }
+    .brand-lockup strong, .brand-lockup small { display: block; }
+    .brand-lockup small { color: var(--muted); margin-top: 2px; }
+    .drawer-nav { display: grid; gap: 6px; }
+    .drawer-footer { margin-top: auto; padding-top: 24px; border-top: 1px solid var(--outline); }
+    .drawer-footer button { width: 100%; min-height: 52px; border: 0; border-radius: 15px; background: transparent; text-align: left; padding: 0 14px; color: var(--muted); cursor: pointer; }
+    .menu-button {
+      width: 50px; height: 50px; border: 1px solid var(--outline); border-radius: 16px;
+      background: var(--surface); display: grid; place-items: center; cursor: pointer;
+    }
+    .menu-glyph, .menu-glyph::before, .menu-glyph::after { width: 20px; height: 2px; border-radius: 2px; background: var(--ink); }
+    .menu-glyph { position: relative; }
+    .menu-glyph::before, .menu-glyph::after { content: ""; position: absolute; right: 0; }
+    .menu-glyph::before { top: -6px; width: 14px; }
+    .menu-glyph::after { top: 6px; width: 17px; }
+    .header-actions { display: flex; align-items: center; gap: 8px; }
+    main { min-height: 100vh; padding: 28px 20px 46px; }
+    }
+    .screen { display: none; animation: enter .22s ease-out; }
+    .screen.active { display: block; }
+    @keyframes enter { from { opacity: 0; transform: translateY(6px); } }
+    .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+    .eyebrow { margin: 0 0 4px; color: var(--brand); font-size: 13px; font-weight: 750; letter-spacing: .05em; }
+    h1 { margin: 0; font-size: clamp(28px, 5vw, 42px); letter-spacing: -.04em; line-height: 1.15; }
+    h2 { margin: 0; font-size: 22px; letter-spacing: -.02em; }
+    h3 { margin: 0; font-size: 18px; }
+    p { line-height: 1.65; }
+    .avatar {
+      width: 48px; height: 48px; border: 1px solid var(--outline); border-radius: 50%;
+      background: var(--surface); display: grid; place-items: center; font-weight: 750;
+    }
+    .content-grid { display: grid; gap: 18px; }
+    .hero {
+      position: relative; overflow: hidden;
+      padding: 26px; min-height: 310px;
+      background: linear-gradient(145deg, var(--surface-raised), var(--surface)); color: var(--hero-ink); border: 1px solid var(--outline); border-radius: 30px;
+      box-shadow: var(--shadow);
+    }
+    .hero::after {
+      content: ""; position: absolute; width: 230px; height: 230px; right: -62px; top: -72px;
+      border: 28px solid var(--brand-soft); border-radius: 50%;
+      box-shadow: 0 0 0 28px rgba(255,255,255,.025), 0 0 80px var(--glow-a);
+    }
+    .hero > * { position: relative; z-index: 1; }
+    .step { color: #d4cbbf; font-size: 13px; font-weight: 650; }
+    .hero h2 { margin: 42px 0 10px; max-width: 520px; font-size: clamp(27px, 6vw, 42px); line-height: 1.18; }
+    .hero p { max-width: 520px; color: var(--muted); }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px 16px; color: var(--muted); font-size: 13px; }
+    .hero .meta { color: var(--muted); margin: 18px 0; }
+    .primary, .secondary, .icon-button {
+      border: 0; cursor: pointer; min-height: 50px; border-radius: 16px; font-weight: 750;
+    }
+    .primary { padding: 0 20px; background: var(--brand); color: #fff; }
+    .hero .primary { background: var(--brand); color: #fff; box-shadow: 0 10px 30px var(--brand-soft); }
+    .secondary { padding: 0 18px; background: transparent; border: 1px solid var(--outline); }
+    .icon-button { min-width: 50px; padding: 0 14px; background: var(--surface); border: 1px solid var(--outline); }
+    .section-title { display: flex; align-items: end; justify-content: space-between; margin: 14px 2px 12px; }
+    .section-title button { border: 0; background: none; color: var(--brand); font-weight: 700; cursor: pointer; }
+    .card { padding: 20px; border: 1px solid var(--outline); border-radius: 22px; background: linear-gradient(145deg, var(--surface-raised), var(--surface)); }
+    .practice-card { display: grid; grid-template-columns: 48px 1fr auto; align-items: center; gap: 14px; }
+    .round-icon { width: 48px; height: 48px; border-radius: 16px; background: var(--steady-soft); color: var(--steady); display: grid; place-items: center; font-weight: 800; }
+    .practice-card p, .song-card p { margin: 3px 0 0; color: var(--muted); font-size: 14px; }
+    .pill { display: inline-flex; align-items: center; min-height: 28px; padding: 4px 10px; border-radius: 999px; background: var(--muted-surface); font-size: 12px; font-weight: 700; }
+    .pill.brand { background: var(--brand-soft); color: var(--brand-strong); }
+    .pill.green { background: var(--steady-soft); color: var(--steady); }
+    .top-space { margin-top: 8px; }
+    .section-space { margin-top: 10px; }
+    .action-space { margin-top: 14px; }
+    .tool-pill { margin-top: 10px; color: var(--ink); }
+    .neutral-round { background: var(--muted-surface); color: var(--ink); }
+    .tool-row, .song-list { display: grid; gap: 12px; }
+    .mini-tool { min-height: 108px; text-align: left; border: 1px solid var(--outline); border-radius: 20px; padding: 17px; background: var(--surface); cursor: pointer; }
+    .mini-tool strong { display: block; margin: 10px 0 3px; }
+    .mini-tool span { color: var(--muted); font-size: 13px; }
+
+    /* Learning */
+    .milestone { padding: 24px; border: 1px solid var(--outline); border-radius: 26px; background: var(--panel-warm); }
+    .milestone .progress { appearance: none; width: 100%; height: 8px; border: 0; border-radius: 10px; overflow: hidden; margin-top: 18px; background: rgba(27,33,29,.12); }
+    .milestone .progress::-webkit-progress-bar { background: rgba(27,33,29,.12); }
+    .milestone .progress::-webkit-progress-value { background: var(--brand); border-radius: 10px; }
+    .milestone .progress::-moz-progress-bar { background: var(--brand); border-radius: 10px; }
+    .path { position: relative; margin: 24px 0 0 12px; padding-left: 34px; }
+    .path::before { content: ""; position: absolute; left: 9px; top: 8px; bottom: 30px; width: 2px; background: var(--outline); }
+    .lesson { position: relative; margin-bottom: 14px; }
+    .lesson::before { content: ""; position: absolute; left: -34px; top: 22px; width: 18px; height: 18px; border: 4px solid var(--canvas); border-radius: 50%; background: var(--outline); }
+    .lesson.done::before { background: var(--steady); }
+    .lesson.current::before { background: var(--brand); box-shadow: 0 0 0 5px var(--brand-soft); }
+    .lesson .card { cursor: pointer; }
+    .lesson.current .card { border-color: var(--brand); }
+
+    /* Practice */
+    .focus-card { background: var(--panel-cool); border: 1px solid var(--outline); }
+    .focus-card h2 { margin: 14px 0 8px; font-size: 28px; }
+    .practice-types { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .type-card { min-height: 150px; padding: 18px; border-radius: 22px; border: 1px solid var(--outline); background: var(--surface); }
+    .type-card .big { font-size: 28px; margin-bottom: 26px; }
+
+    /* Sheets */
+    .search { width: 100%; min-height: 52px; border: 1px solid var(--outline); border-radius: 17px; background: var(--surface); padding: 0 18px; color: var(--ink); }
+    .filters { display: flex; gap: 8px; padding: 14px 0; overflow-x: auto; }
+    .filter { border: 1px solid var(--outline); border-radius: 999px; min-height: 38px; padding: 0 14px; background: var(--surface); white-space: nowrap; }
+    .filter.active { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+    .song-card { display: grid; grid-template-columns: 72px 1fr; gap: 16px; align-items: center; }
+    .cover { width: 72px; aspect-ratio: 4/5; border-radius: 14px; background: linear-gradient(150deg, #b96947, #743421); color: white; display: grid; place-items: center; font-family: Georgia, serif; font-size: 25px; }
+    .cover.green { background: linear-gradient(150deg, #57958a, #21574f); }
+
+    /* Tools and tuner */
+    .tool-feature { min-height: 210px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; }
+    .tool-feature.dark { background: linear-gradient(145deg, var(--brand), var(--surface)); color: #fff; border: 0; }
+    .tool-feature h2 { font-size: 30px; }
+    .tool-feature p { margin: 5px 0; color: var(--muted); }
+    .tool-feature.dark p { color: rgba(255,255,255,.72); }
+    .tool-symbol { font-size: 38px; align-self: end; }
+    .tuner { display: none; position: fixed; inset: 0; z-index: 10; background: var(--canvas); overflow: auto; }
+    .tuner.open { display: block; }
+    .tuner-inner { min-height: 100%; max-width: 850px; margin: auto; padding: 24px 20px 38px; display: flex; flex-direction: column; }
+    .tuner-header { display: flex; align-items: center; justify-content: space-between; }
+    .tuner-header strong { font-size: 16px; }
+    .mode { color: var(--brand); font-size: 13px; font-weight: 750; }
+    .gauge-wrap { flex: 1; display: grid; place-items: center; text-align: center; padding: 42px 0 20px; }
+    .target-label { color: var(--muted); font-size: 14px; }
+    .note { font-family: ui-monospace, Consolas, monospace; font-size: clamp(82px, 24vw, 150px); font-weight: 700; letter-spacing: -.09em; line-height: 1; margin: 12px 0; }
+    .gauge { position: relative; width: min(460px, 90vw); height: 130px; overflow: hidden; margin-top: 10px; }
+    .gauge::before { content: ""; position: absolute; left: 5%; right: 5%; bottom: -175px; height: 260px; border: 2px solid var(--outline); border-radius: 50%; }
+    .ticks { position: absolute; inset: 47px 12% auto; display: flex; justify-content: space-between; color: var(--muted); font: 12px ui-monospace, monospace; }
+    .needle { position: absolute; left: 46%; bottom: 18px; width: 4px; height: 93px; border-radius: 4px; background: var(--attention); transform: rotate(-10deg); transform-origin: bottom; }
+    .direction { margin: -8px 0 0; color: var(--attention); font-size: 22px; font-weight: 800; }
+    .instruction { margin: 6px 0 28px; color: var(--muted); }
+    .strings { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+    .string { min-height: 58px; border: 1px solid var(--outline); border-radius: 15px; background: var(--surface); font-weight: 800; }
+    .string.current { border: 2px solid var(--brand); background: var(--brand-soft); color: var(--brand-strong); }
+    .string.done { background: var(--steady-soft); color: var(--steady); border-color: transparent; }
+    .diagnostics { text-align: center; color: var(--muted); font: 13px ui-monospace, Consolas, monospace; margin-top: 16px; }
+    .settings-panel { display: none; position: fixed; inset: 0; z-index: 30; background: var(--canvas); overflow-y: auto; }
+    .settings-panel.open { display: block; }
+    .settings-inner { width: min(760px, 100%); min-height: 100%; margin: auto; padding: 24px 20px 56px; }
+    .settings-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px; }
+    .settings-header h1 { font-size: 30px; }
+    .theme-preview { min-height: 180px; padding: 24px; border: 1px solid var(--outline); border-radius: 28px; background: linear-gradient(145deg, var(--surface-raised), var(--surface)); overflow: hidden; position: relative; }
+    .theme-preview::after { content: ""; position: absolute; width: 180px; height: 180px; right: -35px; top: -60px; border-radius: 50%; background: var(--brand); filter: blur(60px); opacity: .34; }
+    .theme-preview > * { position: relative; z-index: 1; }
+    .preview-line { width: 58%; height: 10px; margin-top: 16px; border-radius: 10px; background: var(--muted-surface); }
+    .preview-action { width: 120px; height: 42px; margin-top: 28px; border-radius: 14px; background: var(--brand); }
+    .settings-section { margin-top: 28px; }
+    .settings-section > p { margin: 6px 0 14px; color: var(--muted); font-size: 14px; }
+    .theme-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .theme-option { min-height: 110px; padding: 12px; border: 1px solid var(--outline); border-radius: 18px; background: var(--surface); color: var(--ink); text-align: left; cursor: pointer; }
+    .theme-option.active { border: 2px solid var(--brand); background: var(--brand-soft); }
+    .theme-swatches { display: flex; gap: 5px; margin-bottom: 18px; }
+    .theme-swatches i { width: 20px; height: 20px; border-radius: 7px; }
+    .theme-option strong, .theme-option small { display: block; }
+    .theme-option small { margin-top: 3px; color: var(--muted); }
+    .swatch-aurora-dark { background: #121621; } .swatch-aurora-brand { background: #886cff; } .swatch-aurora-steady { background: #54d7c4; }
+    .swatch-wood-light { background: #fffdf8; } .swatch-wood-brand { background: #a14e2d; } .swatch-wood-steady { background: #147d73; }
+    .swatch-glacier-light { background: #fbfdff; } .swatch-glacier-brand { background: #087fa7; } .swatch-glacier-steady { background: #82d8ea; }
+    .setting-row { min-height: 68px; padding: 12px 2px; border-bottom: 1px solid var(--outline); display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .setting-row strong, .setting-row small { display: block; }
+    .setting-row small { margin-top: 3px; color: var(--muted); }
+    .color-input { width: 52px; height: 42px; padding: 3px; border: 1px solid var(--outline); border-radius: 13px; background: var(--surface); cursor: pointer; }
+    .switch { position: relative; width: 52px; height: 30px; flex: 0 0 auto; }
+    .switch input { position: absolute; opacity: 0; }
+    .switch span { position: absolute; inset: 0; border-radius: 30px; background: var(--muted-surface); transition: background .2s; }
+    .switch span::after { content: ""; position: absolute; width: 22px; height: 22px; left: 4px; top: 4px; border-radius: 50%; background: var(--muted); transition: transform .2s, background .2s; }
+    .switch input:checked + span { background: var(--brand-soft); }
+    .switch input:checked + span::after { transform: translateX(22px); background: var(--brand); }
+    body.no-glow { background: var(--canvas); }
+    body.compact-density .card { padding: 15px; }
+    body.compact-density .hero { min-height: 270px; padding: 22px; }
+    body.reduce-motion * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+
+    @media (min-width: 760px) {
+      main { padding: 42px 48px 60px; }
+      .content-grid { grid-template-columns: minmax(0, 1.55fr) minmax(280px, .85fr); align-items: start; }
+      .side-column { display: grid; gap: 18px; }
+      .tool-row { grid-template-columns: repeat(3, 1fr); }
+      .song-list { grid-template-columns: 1fr 1fr; }
+      .practice-types { grid-template-columns: repeat(4, 1fr); }
+      .tools-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+      .tools-grid .wide { grid-column: span 2; }
+      .settings-inner { padding-top: 42px; }
+    }
+    @media (min-width: 1100px) {
+      main { padding-left: 64px; padding-right: 64px; }
+      .path-layout { display: grid; grid-template-columns: .8fr 1.2fr; gap: 28px; align-items: start; }
+      .sticky { position: sticky; top: 42px; }
+    }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; scroll-behavior: auto !important; } }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <main>
+      <section class="screen active" id="home" aria-labelledby="home-title">
+        <header class="page-header">
+          <div><p class="eyebrow">9 月 7 日 · 星期一</p><h1 id="home-title" tabindex="-1">今天，从听准开始</h1></div>
+          <button type="button" class="menu-button" aria-label="打开导航菜单" aria-expanded="false"><span class="menu-glyph"></span></button>
+        </header>
+        <div class="content-grid">
+          <div>
+            <article class="hero">
+              <span class="pill">新手路径 · 第 1 步</span>
+              <h2>先让六根弦回到正确声音</h2>
+              <p>完成标准调音，后面的和弦才会听起来正确。麦克风只在本机实时分析。</p>
+              <div class="meta"><span>约 6 分钟</span><span>需要一把吉他</span></div>
+              <button type="button" class="primary open-tuner">开始第一次调音</button>
+            </article>
+            <div class="section-title"><h2>常用工具</h2><button type="button" data-go="tools">查看全部</button></div>
+            <div class="tool-row">
+              <button type="button" class="mini-tool open-tuner"><span>⌁</span><strong>调音器</strong><span>标准调弦 E A D G B E</span></button>
+              <button type="button" class="mini-tool"><span>●</span><strong>节拍器</strong><span>上次使用 60 BPM</span></button>
+              <button type="button" class="mini-tool"><span>Am</span><strong>和弦库</strong><span>5 个入门和弦</span></button>
+            </div>
+          </div>
+          <aside class="side-column" aria-label="今日补充内容">
+            <div>
+              <div class="section-title"><h2>今天练 5 分钟</h2><span class="pill green">轻量</span></div>
+              <article class="card practice-card">
+                <div class="round-icon">6</div>
+                <div><h3>认识六根弦</h3><p>从最粗的第 6 弦开始</p></div>
+                <span>›</span>
+              </article>
+            </div>
+            <div>
+              <div class="section-title"><h2>第一首歌</h2><button type="button" data-go="sheets">打开乐库</button></div>
+              <article class="card song-card">
+                <div class="cover">01</div>
+                <div><span class="pill brand">准备中</span><h3 class="top-space">沿着晚风</h3><p>Em · G · C · D · 72 BPM</p></div>
+              </article>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="screen" id="learn" aria-labelledby="learn-title">
+        <header class="page-header"><div><p class="eyebrow">新手路径</p><h1 id="learn-title" tabindex="-1">弹响第一首歌</h1></div><button type="button" class="menu-button" aria-label="打开导航菜单" aria-expanded="false"><span class="menu-glyph"></span></button></header>
+        <div class="path-layout">
+          <aside class="milestone sticky" aria-labelledby="milestone-title">
+            <span class="pill brand">当前里程碑</span>
+            <h2 class="section-space" id="milestone-title">把吉他调准</h2>
+            <p>先听懂六根弦，再用调音器让每根弦回到标准音高。</p>
+            <div class="meta"><span>2 个小步骤</span><span>约 10 分钟</span></div>
+            <progress class="progress" aria-label="路径进度" max="100" value="18">18%</progress>
+          </aside>
+          <div class="path">
+            <div class="lesson done"><article class="card"><span class="pill green">已完成</span><h3 class="section-space">认识你的吉他</h3><p class="meta">3 分钟 · 琴弦与品格</p></article></div>
+            <div class="lesson current"><article class="card open-tuner"><span class="pill brand">现在学</span><h3 class="section-space">第一次标准调音</h3><p class="meta">6 分钟 · 使用调音器</p></article></div>
+            <div class="lesson"><article class="card"><span class="pill">接下来</span><h3 class="section-space">弹响 Em 和弦</h3><p class="meta">8 分钟 · 两根手指</p></article></div>
+            <div class="lesson"><article class="card"><h3>保持四拍稳定</h3><p class="meta">7 分钟 · 节拍器</p></article></div>
+            <div class="lesson"><article class="card"><h3>Em 与 G 的第一次转换</h3><p class="meta">10 分钟 · 和弦转换</p></article></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="screen" id="practice" aria-labelledby="practice-title">
+        <header class="page-header"><div><p class="eyebrow">自由练习</p><h1 id="practice-title" tabindex="-1">今天想练什么？</h1></div><button type="button" class="menu-button" aria-label="打开导航菜单" aria-expanded="false"><span class="menu-glyph"></span></button></header>
+        <article class="card focus-card">
+          <span class="pill green">为你建议</span><h2>认识六根弦</h2>
+          <p>这是第一次调音前最短的准备。完成后会回到当前学习路径。</p>
+          <div class="meta action-space"><span>5 分钟</span><span>无需节拍器</span></div>
+          <button type="button" class="primary">开始练习</button>
+        </article>
+        <div class="section-title"><h2>专项练习</h2></div>
+        <div class="practice-types">
+          <article class="type-card"><div class="big">Am</div><h3>和弦按法</h3><p class="meta">逐弦检查声音</p></article>
+          <article class="type-card"><div class="big">A → E</div><h3>和弦转换</h3><p class="meta">双和弦与循环</p></article>
+          <article class="type-card"><div class="big">↓ ↓</div><h3>节奏跟拍</h3><p class="meta">从 50 BPM 开始</p></article>
+          <article class="type-card"><div class="big">▥</div><h3>曲目分段</h3><p class="meta">在歌曲中应用</p></article>
+        </div>
+      </section>
+
+      <section class="screen" id="sheets" aria-labelledby="sheets-title">
+        <header class="page-header"><div><p class="eyebrow">我的乐库</p><h1 id="sheets-title" tabindex="-1">曲谱</h1></div><div class="header-actions"><button type="button" class="icon-button">导入</button><button type="button" class="menu-button" aria-label="打开导航菜单" aria-expanded="false"><span class="menu-glyph"></span></button></div></header>
+        <input class="search" type="search" aria-label="搜索曲谱" placeholder="搜索标题、作者或和弦">
+        <div class="filters"><button type="button" class="filter active">全部</button><button type="button" class="filter">本地</button><button type="button" class="filter">收藏</button><button type="button" class="filter">学习中</button><button type="button" class="filter">已完成</button><button type="button" class="filter">在线</button></div>
+        <div class="section-title"><h2>适合你的第一首歌</h2><span class="pill">2 首</span></div>
+        <div class="song-list">
+          <article class="card song-card"><div class="cover">01</div><div><span class="pill brand">内置 · 学习中</span><h3 class="top-space">沿着晚风</h3><p>原创练习曲 · 入门</p><p>Em · G · C · D · 72 BPM</p></div></article>
+          <article class="card song-card"><div class="cover green">02</div><div><span class="pill green">内置 · 可离线</span><h3 class="top-space">河岸边</h3><p>公版改编 · 入门</p><p>Am · C · G · 68 BPM</p></div></article>
+        </div>
+        <div class="section-title"><h2>最近导入</h2></div>
+        <article class="card practice-card"><div class="round-icon neutral-round">PDF</div><div><h3>我的练习谱.pdf</h3><p>已导入 · 6 页 · 仅按页阅读</p></div><span>›</span></article>
+      </section>
+
+      <section class="screen" id="tools" aria-labelledby="tools-title">
+        <header class="page-header"><div><p class="eyebrow">无需进入课程</p><h1 id="tools-title" tabindex="-1">工具</h1></div><button type="button" class="menu-button" aria-label="打开导航菜单" aria-expanded="false"><span class="menu-glyph"></span></button></header>
+        <div class="tools-grid">
+          <article class="card tool-feature dark open-tuner"><div class="tool-symbol">⌁</div><div><h2>调音器</h2><p>逐根听准标准六弦</p><span class="pill tool-pill">打开调音器</span></div></article>
+          <article class="card tool-feature"><div class="tool-symbol">60</div><div><h2>节拍器</h2><p>稳定四拍，从 40 到 200 BPM</p><span class="pill brand section-space">上次 60 BPM</span></div></article>
+          <article class="card tool-feature wide chord-tool"><div class="tool-symbol">C · G · Am</div><div><h2>和弦库</h2><p>查看按法、逐弦检查，再进入转换练习</p></div></article>
+        </div>
+      </section>
+    </main>
+
+  </div>
+
+  <button type="button" class="drawer-backdrop" aria-label="关闭导航菜单" tabindex="-1"></button>
+  <aside class="drawer" aria-labelledby="drawer-title" inert>
+    <div class="drawer-header">
+      <div class="brand-lockup"><div class="brand-mark">XS</div><div><strong id="drawer-title">XStar Guitar</strong><small>下一步，清楚一点</small></div></div>
+      <button type="button" class="icon-button close-drawer" aria-label="关闭导航菜单">×</button>
+    </div>
+    <nav class="drawer-nav" aria-label="主要页面">
+      <button type="button" class="nav-button active" data-screen="home"><span class="icon">⌂</span><span class="nav-copy"><strong>今天</strong><small>下一步与继续学习</small></span><span class="current-label">当前</span></button>
+      <button type="button" class="nav-button" data-screen="learn"><span class="icon">◫</span><span class="nav-copy"><strong>学习</strong><small>课程与新手路径</small></span><span class="current-label">当前</span></button>
+      <button type="button" class="nav-button" data-screen="practice"><span class="icon">◎</span><span class="nav-copy"><strong>练习</strong><small>和弦、转换与节奏</small></span><span class="current-label">当前</span></button>
+      <button type="button" class="nav-button" data-screen="sheets"><span class="icon">▤</span><span class="nav-copy"><strong>曲谱</strong><small>乐库、收藏与导入</small></span><span class="current-label">当前</span></button>
+      <button type="button" class="nav-button" data-screen="tools"><span class="icon">⌁</span><span class="nav-copy"><strong>工具</strong><small>调音器、节拍器与和弦</small></span><span class="current-label">当前</span></button>
+    </nav>
+    <div class="drawer-footer"><button type="button" class="open-settings">外观、设置与本地数据　›</button></div>
+  </aside>
+
+  <section class="settings-panel" id="settings" aria-labelledby="settings-title">
+    <div class="settings-inner">
+      <header class="settings-header">
+        <div><p class="eyebrow">个性化</p><h1 id="settings-title">外观设置</h1></div>
+        <button type="button" class="icon-button close-settings" aria-label="关闭外观设置">×</button>
+      </header>
+      <div class="theme-preview" role="img" aria-label="当前主题预览">
+        <span class="pill brand">实时预览</span>
+        <h2 class="section-space">让练习空间更像你</h2>
+        <div class="preview-line"></div><div class="preview-line"></div><div class="preview-action"></div>
+      </div>
+      <section class="settings-section" aria-labelledby="preset-title">
+        <h2 id="preset-title">主题预设</h2>
+        <p>只改变视觉氛围，不改变调音和练习状态的含义。</p>
+        <div class="theme-options">
+          <button type="button" class="theme-option active" data-theme-option="aurora"><span class="theme-swatches"><i class="swatch-aurora-dark"></i><i class="swatch-aurora-brand"></i><i class="swatch-aurora-steady"></i></span><strong>极光夜</strong><small>沉浸深色</small></button>
+          <button type="button" class="theme-option" data-theme-option="wood"><span class="theme-swatches"><i class="swatch-wood-light"></i><i class="swatch-wood-brand"></i><i class="swatch-wood-steady"></i></span><strong>暖木</strong><small>温和自然</small></button>
+          <button type="button" class="theme-option" data-theme-option="glacier"><span class="theme-swatches"><i class="swatch-glacier-light"></i><i class="swatch-glacier-brand"></i><i class="swatch-glacier-steady"></i></span><strong>冰川</strong><small>清晰轻量</small></button>
+        </div>
+      </section>
+      <section class="settings-section" aria-labelledby="custom-title">
+        <h2 id="custom-title">自定义</h2>
+        <div class="setting-row"><div><strong>强调色</strong><small>按钮、进度与当前项目</small></div><input class="color-input" id="accent-color" type="color" value="#886cff" aria-label="自定义强调色"></div>
+        <div class="setting-row"><div><strong>背景光晕</strong><small>关闭后使用纯色背景</small></div><label class="switch"><input id="glow-toggle" type="checkbox" checked aria-label="显示背景光晕"><span></span></label></div>
+        <div class="setting-row"><div><strong>紧凑布局</strong><small>缩小区块间距与卡片留白</small></div><label class="switch"><input id="density-toggle" type="checkbox" aria-label="使用紧凑布局"><span></span></label></div>
+        <div class="setting-row"><div><strong>减少动画</strong><small>保留状态变化，移除位移动效</small></div><label class="switch"><input id="motion-toggle" type="checkbox" aria-label="减少动画"><span></span></label></div>
+      </section>
+    </div>
+  </section>
+
+  <section class="tuner" id="tuner" aria-labelledby="tuner-title">
+    <div class="tuner-inner">
+      <header class="tuner-header">
+        <button type="button" class="icon-button close-tuner" aria-label="关闭调音器">←</button>
+        <strong id="tuner-title">标准调弦</strong>
+        <button type="button" class="icon-button mode">自动识别</button>
+      </header>
+      <div class="gauge-wrap">
+        <div>
+          <div class="target-label">正在调第 6 弦 · 目标 E2</div>
+          <div class="note">E</div>
+          <div class="gauge" role="img" aria-label="当前声音偏低 12 音分">
+            <div class="ticks"><span>-50</span><span>-25</span><span>0</span><span>+25</span><span>+50</span></div>
+            <div class="needle"></div>
+          </div>
+          <p class="direction">↑ 声音有点低</p>
+          <p class="instruction">再拧紧一点，然后重新拨一下第 6 弦</p>
+        </div>
+      </div>
+      <div class="strings" role="group" aria-label="六根弦调音进度">
+        <button type="button" class="string current">6<br>E</button><button type="button" class="string">5<br>A</button><button type="button" class="string">4<br>D</button><button type="button" class="string">3<br>G</button><button type="button" class="string">2<br>B</button><button type="button" class="string">1<br>E</button>
+      </div>
+      <div class="diagnostics">81.6 Hz · -12 cents · 输入清晰 · A4 440 Hz</div>
+    </div>
+  </section>
+
+  <script>
+    const screens = [...document.querySelectorAll('.screen')];
+    const navButtons = [...document.querySelectorAll('[data-screen]')];
+    const drawer = document.querySelector('.drawer');
+    const menuButtons = [...document.querySelectorAll('.menu-button')];
+    const settings = document.querySelector('.settings-panel');
+    const accentInput = document.querySelector('#accent-color');
+    const themeAccents = { aurora: '#886cff', wood: '#a14e2d', glacier: '#087fa7' };
+
+    function hexToRgb(hex) {
+      const value = hex.replace('#', '');
+      return `${parseInt(value.slice(0, 2), 16)}, ${parseInt(value.slice(2, 4), 16)}, ${parseInt(value.slice(4, 6), 16)}`;
+    }
+
+    function setAccent(hex) {
+      const rgb = hexToRgb(hex);
+      document.body.style.setProperty('--brand', hex);
+      document.body.style.setProperty('--brand-strong', hex);
+      document.body.style.setProperty('--brand-soft', `rgba(${rgb}, .16)`);
+      document.body.style.setProperty('--glow-a', `rgba(${rgb}, .2)`);
+      accentInput.value = hex;
+    }
+
+    function setTheme(theme, accent = themeAccents[theme]) {
+      document.body.dataset.theme = theme;
+      document.querySelectorAll('[data-theme-option]').forEach(button => button.classList.toggle('active', button.dataset.themeOption === theme));
+      setAccent(accent);
+      localStorage.setItem('xstar-theme', theme);
+      localStorage.setItem('xstar-accent', accent);
+    }
+
+    function openSettings() {
+      setDrawer(false);
+      settings.classList.add('open');
+      document.querySelector('.close-settings').focus();
+    }
+
+    function closeSettings() {
+      settings.classList.remove('open');
+      document.querySelector('.menu-button').focus();
+    }
+
+    function setDrawer(open) {
+      document.body.classList.toggle('drawer-open', open);
+      drawer.inert = !open;
+      menuButtons.forEach(button => button.setAttribute('aria-expanded', String(open)));
+      if (open) document.querySelector('.close-drawer').focus();
+    }
+
+    function showScreen(id) {
+      screens.forEach(screen => screen.classList.toggle('active', screen.id === id));
+      navButtons.forEach(button => button.classList.toggle('active', button.dataset.screen === id));
+      setDrawer(false);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      document.querySelector(`#${id} h1`).focus({ preventScroll: true });
+    }
+
+    navButtons.forEach(button => button.addEventListener('click', () => showScreen(button.dataset.screen)));
+    document.querySelectorAll('[data-go]').forEach(button => button.addEventListener('click', () => showScreen(button.dataset.go)));
+    document.querySelectorAll('.open-tuner').forEach(button => button.addEventListener('click', () => document.querySelector('#tuner').classList.add('open')));
+    document.querySelector('.close-tuner').addEventListener('click', () => document.querySelector('#tuner').classList.remove('open'));
+    menuButtons.forEach(button => button.addEventListener('click', () => setDrawer(true)));
+    document.querySelector('.close-drawer').addEventListener('click', () => setDrawer(false));
+    document.querySelector('.drawer-backdrop').addEventListener('click', () => setDrawer(false));
+    document.querySelector('.open-settings').addEventListener('click', openSettings);
+    document.querySelector('.close-settings').addEventListener('click', closeSettings);
+    document.querySelectorAll('[data-theme-option]').forEach(button => button.addEventListener('click', () => setTheme(button.dataset.themeOption)));
+    accentInput.addEventListener('input', event => {
+      setAccent(event.target.value);
+      localStorage.setItem('xstar-accent', event.target.value);
+    });
+    document.querySelector('#glow-toggle').addEventListener('change', event => {
+      document.body.classList.toggle('no-glow', !event.target.checked);
+      localStorage.setItem('xstar-glow', String(event.target.checked));
+    });
+    document.querySelector('#density-toggle').addEventListener('change', event => {
+      document.body.classList.toggle('compact-density', event.target.checked);
+      localStorage.setItem('xstar-compact', String(event.target.checked));
+    });
+    document.querySelector('#motion-toggle').addEventListener('change', event => {
+      document.body.classList.toggle('reduce-motion', event.target.checked);
+      localStorage.setItem('xstar-motion', String(event.target.checked));
+    });
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && document.body.classList.contains('drawer-open')) setDrawer(false);
+      else if (event.key === 'Escape' && settings.classList.contains('open')) closeSettings();
+    });
+
+    let touchStartX = 0;
+    document.addEventListener('touchstart', event => { touchStartX = event.changedTouches[0].clientX; }, { passive: true });
+    document.addEventListener('touchend', event => {
+      const touchEndX = event.changedTouches[0].clientX;
+      const distance = touchStartX - touchEndX;
+      const startedAtRightEdge = touchStartX > window.innerWidth - 28;
+      if (!document.body.classList.contains('drawer-open') && startedAtRightEdge && distance > 60) setDrawer(true);
+      if (document.body.classList.contains('drawer-open') && distance < -60) setDrawer(false);
+    }, { passive: true });
+
+    const savedTheme = localStorage.getItem('xstar-theme') || 'aurora';
+    setTheme(savedTheme, localStorage.getItem('xstar-accent') || themeAccents[savedTheme]);
+    const glowEnabled = localStorage.getItem('xstar-glow') !== 'false';
+    const compactEnabled = localStorage.getItem('xstar-compact') === 'true';
+    const motionReduced = localStorage.getItem('xstar-motion') === 'true';
+    document.querySelector('#glow-toggle').checked = glowEnabled;
+    document.querySelector('#density-toggle').checked = compactEnabled;
+    document.querySelector('#motion-toggle').checked = motionReduced;
+    document.body.classList.toggle('no-glow', !glowEnabled);
+    document.body.classList.toggle('compact-density', compactEnabled);
+    document.body.classList.toggle('reduce-motion', motionReduced);
+  </script>
+</body>
+</html>
