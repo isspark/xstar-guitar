@@ -1,0 +1,23 @@
+const { chromium } = require('C:/Users/Mrxuz/AppData/Local/npm-cache/_npx/e41f203b7505f1fb/node_modules/playwright');
+(async () => {
+  const browser = await chromium.launch({ executablePath: 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', headless: true });
+  const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  page.on('pageerror', error => console.log('PAGE ERROR', error.message));
+  page.on('console', message => { if (message.type() === 'error') console.log('CONSOLE', message.text()); });
+  await page.goto('http://localhost:18937/web/');
+  await page.waitForFunction(() => window.xstarScoreRuntime?.state.api?.isReadyForPlayback);
+  await page.click('#follow-toggle');
+  await page.evaluate(() => window.scrollTo(0, 1200));
+  const before = await page.evaluate(() => window.scrollY);
+  await page.evaluate(() => window.xstarScoreRuntime.setActivePosition({ currentMeasure: 40, currentTick: 1000 }));
+  await page.waitForTimeout(400);
+  const disabled = await page.evaluate(() => window.scrollY);
+  await page.click('#follow-toggle');
+  await page.evaluate(() => window.scrollTo(0, 1200));
+  await page.evaluate(() => window.xstarScoreRuntime.setActivePosition({ currentMeasure: 40, currentTick: 1000 }));
+  await page.waitForTimeout(600);
+  const enabled = await page.evaluate(() => window.scrollY);
+  console.log({ before, disabled, enabled });
+  if (disabled !== before || enabled === before) process.exitCode = 1;
+  await browser.close();
+})();

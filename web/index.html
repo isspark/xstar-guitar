@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#111827">
+  <title>XStar Guitar · alphaTab 曲谱验证</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">XSTAR GUITAR / SCORE RUNTIME</p>
+        <h1>alphaTab 统一 SVG 曲谱验证</h1>
+        <p class="subtitle">PC 与 Android WebView 共用同一套 alphaTab、简谱扩展和播放运行时。</p>
+      </div>
+      <div class="status-stack">
+        <span id="engine-status" class="status status-pending">正在初始化</span>
+        <span id="position-status" class="position-status">未播放</span>
+      </div>
+    </header>
+
+    <section class="toolbar" aria-label="曲谱控制">
+      <button id="play-button" class="primary" type="button">▶ 播放</button>
+      <button id="pause-button" type="button">Ⅱ 暂停</button>
+      <button id="stop-button" type="button">■ 停止</button>
+      <label class="tempo-control" for="tempo-input">
+        速度 <output id="tempo-output" for="tempo-input">72</output> BPM
+        <input id="tempo-input" type="range" min="40" max="180" value="72" step="1">
+      </label>
+      <button id="zoom-out" type="button" title="缩小">−</button>
+      <button id="zoom-in" type="button" title="放大">＋</button>
+      <button id="theme-toggle" type="button">切换主题</button>
+      <label class="check-control"><input id="jianpu-toggle" type="checkbox" checked> 数字简谱</label>
+      <label class="check-control"><input id="lyrics-toggle" type="checkbox" checked> 歌词</label>
+      <label class="check-control"><input id="follow-toggle" type="checkbox" checked> 播放跟随</label>
+      <button id="import-score" type="button">导入 Score JSON</button>
+      <input id="score-file" class="hidden-file-input" type="file" accept="application/json,.json">
+      <select id="built-in-score" aria-label="选择内置示例">
+        <option value="./scores/score-example.json">标准示例</option>
+        <option value="./scores/score-complete-example.json">吉他技巧与节奏图鉴（24 小节）</option>
+        <option value="./scores/hua.json" selected>画 · 三页图片转录</option>
+      </select>
+      <button id="export-svg" type="button">导出 SVG</button>
+    </section>
+
+    <section class="info-grid">
+      <article class="info-card">
+        <span class="card-label">输入</span>
+        <strong>Score JSON / AlphaTex</strong>
+        <span id="score-source-summary">正在读取曲谱</span>
+      </article>
+      <article class="info-card">
+        <span class="card-label">渲染</span>
+        <strong>alphaTab + SVG</strong>
+        <span>六线谱和简谱写入同一 SVG 文档</span>
+      </article>
+      <article class="info-card">
+        <span class="card-label">播放</span>
+        <strong>alphaSynth</strong>
+        <span>共享 measure + tick 位置事件</span>
+      </article>
+    </section>
+
+    <section class="score-card" aria-label="曲谱显示区域">
+      <div class="score-card-header">
+        <div>
+          <span class="section-kicker">LIVE SCORE</span>
+          <h2 id="score-title">正在加载曲谱</h2>
+        </div>
+        <span id="render-status" class="render-status">等待曲谱</span>
+      </div>
+      <p id="transcription-notice" class="transcription-notice" hidden></p>
+      <div id="score-scroll" class="score-scroll">
+        <div id="score" class="score-host" aria-live="polite"></div>
+      </div>
+      <div id="empty-state" class="empty-state">正在加载 alphaTab…</div>
+    </section>
+
+    <footer class="implementation-note">
+      <strong>验证说明：</strong>数字简谱是共享 SVG 扩展层，使用稳定的 `jianpu-m{measure}-t{tick}` 节点 ID；播放时只更新节点 class，不重排整份曲谱。
+    </footer>
+  </main>
+
+  <script src="../docs/vendor/alphatab/alphaTab.min.js"></script>
+  <script src="./score-image-adapter.js?v=20261017-3"></script>
+  <script src="./app.js?v=20261017-23"></script>
+</body>
+</html>

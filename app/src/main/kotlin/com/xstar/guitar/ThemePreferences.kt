@@ -9,7 +9,7 @@ class ThemePreferences(context: Context) {
     private val preferences = context.getSharedPreferences("appearance", Context.MODE_PRIVATE)
 
     fun load(): ThemeSettings {
-        val preset = runCatching { ThemePreset.valueOf(preferences.getString("preset", null) ?: "Aurora") }.getOrDefault(ThemePreset.Aurora)
+        val preset = runCatching { ThemePreset.valueOf(preferences.getString("preset", null) ?: "Pulse") }.getOrDefault(ThemePreset.Pulse)
         return ThemeSettings(
             preset = preset,
             accent = preferences.getLong("accent", preset.accent),

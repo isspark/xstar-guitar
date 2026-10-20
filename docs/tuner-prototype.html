@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101211">
+  <title>XSTAR — 吉他调音器</title>
+  <style>
+    :root { color-scheme: dark; --bg:#101211; --panel:#191c19; --line:#30352f; --text:#f0f2e9; --muted:#92998c; --lime:#d3fc79; --orange:#ffb779; --status:var(--orange); }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font-family:Inter,"Segoe UI","Microsoft YaHei",sans-serif; }
+    button,select,input { font:inherit; }
+    button,select { color:inherit; }
+    button { cursor:pointer; }
+    button:focus-visible,select:focus-visible,input:focus-visible,a:focus-visible { outline:2px solid var(--lime); outline-offset:5px; }
+    button:disabled { opacity:.45; cursor:not-allowed; }
+    svg { display:block; }
+    .shell { max-width:1320px; margin:auto; padding:0 48px; }
+    header { height:100px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--line); }
+    .brand { display:flex; gap:12px; align-items:center; font-size:24px; font-weight:850; letter-spacing:-1px; }
+    .brand svg { width:32px; height:32px; color:var(--lime); }
+    .brand span { font-size:10px; letter-spacing:2px; font-weight:500; color:var(--muted); border-left:1px solid var(--line); padding-left:16px; margin-left:8px; }
+    .header-right { display:flex; align-items:center; gap:24px; }
+    .edition { font:11px monospace; color:var(--muted); letter-spacing:1px; }
+    .icon-btn { width:44px; height:44px; border:1px solid var(--line); border-radius:50%; background:transparent; display:grid; place-items:center; }
+    .icon-btn svg { width:19px; height:19px; }
+    .intro { display:flex; align-items:end; justify-content:space-between; padding:38px 0 28px; }
+    .kicker { color:var(--lime); font:11px monospace; letter-spacing:2px; display:flex; align-items:center; gap:8px; }
+    .kicker::before { content:""; width:6px; height:6px; background:var(--lime); }
+    h1 { font-size:36px; letter-spacing:-1.5px; margin:10px 0 0; font-weight:650; }
+    .intro p { margin:0; color:var(--muted); font-size:13px; }
+    .workspace { display:grid; grid-template-columns:minmax(0,1fr) 320px; gap:20px; }
+    .instrument { border:1px solid var(--line); border-radius:24px; overflow:hidden; background:radial-gradient(ellipse at 50% 38%,#26302066,transparent 60%),#161916; }
+    .instrument-top { display:flex; justify-content:space-between; align-items:center; padding:24px 26px; }
+    .segmented { padding:4px; border:1px solid var(--line); display:flex; border-radius:9px; gap:4px; background:#101310; }
+    .segmented button { border:0; border-radius:6px; background:transparent; padding:8px 14px; font-size:12px; color:var(--muted); }
+    .segmented button.active { background:#30362b; color:var(--lime); }
+    .signal { display:flex; align-items:center; gap:7px; font:10px monospace; color:var(--muted); }
+    .signal i { height:9px; width:3px; background:var(--lime); }
+    .signal i:nth-child(2) { height:15px; }.signal i:nth-child(3) { height:20px; }.signal.paused i { background:#62695c; }
+    .readout { text-align:center; padding:4px 20px 0; }
+    .readout-label { font-size:12px; color:var(--muted); letter-spacing:1px; }
+    .note { font-size:120px; line-height:1.2; font-weight:650; letter-spacing:-8px; margin:7px 0 0; }
+    .note sub { vertical-align:baseline; color:var(--muted); font-size:28px; font-weight:400; letter-spacing:0; margin-left:6px; }
+    .frequency { font:13px monospace; color:var(--muted); }
+    .frequency strong { color:var(--text); font-weight:400; }
+    .meter { position:relative; margin:25px 38px 0; padding:22px 0 0; }
+    .meter-ticks { height:45px; display:flex; justify-content:space-between; align-items:center; position:relative; }
+    .meter-ticks i { width:1px; height:13px; background:#495044; }
+    .meter-ticks i.major { height:25px; background:#7c8475; }
+    .meter-ticks i.center { height:39px; background:var(--lime); width:2px; }
+    .sweet-zone { position:absolute; left:45%; right:45%; top:22px; height:45px; background:#d3fc790c; border-left:1px solid #d3fc7922; border-right:1px solid #d3fc7922; }
+    .pointer { position:absolute; left:38%; top:13px; height:60px; width:2px; background:var(--status); box-shadow:0 0 14px color-mix(in srgb,var(--status),transparent 55%); transition:left .25s ease,background .25s; }
+    .pointer::before { content:""; position:absolute; top:-8px; left:-4px; border-left:5px solid transparent; border-right:5px solid transparent; border-top:7px solid var(--status); }
+    .meter-labels { display:flex; justify-content:space-between; font:10px monospace; color:#7c8475; margin-top:8px; }
+    .meter-labels span:nth-child(3) { color:var(--lime); }
+    .pitch-status { display:flex; justify-content:center; align-items:center; gap:10px; margin:25px 0 7px; color:var(--status); font-size:17px; }
+    .cents { font:12px monospace; padding:5px 8px; border:1px solid #ffffff14; border-radius:5px; }
+    .guidance { margin:0; text-align:center; color:var(--muted); font-size:12px; }
+    .wave { width:100%; height:60px; margin:24px 0 0; opacity:.65; }
+    .wave path { stroke:var(--lime); fill:none; stroke-width:1; }
+    .wave .baseline { stroke:#394032; }
+    .string-section { border-top:1px solid var(--line); padding:22px 26px 24px; background:#10131066; }
+    .section-meta { display:flex; justify-content:space-between; font-size:11px; color:var(--muted); margin-bottom:16px; }
+    .section-meta span:last-child { font:10px monospace; letter-spacing:1px; }
+    .strings { display:grid; grid-template-columns:repeat(6,1fr); gap:10px; }
+    .string { position:relative; display:flex; flex-direction:column; align-items:center; gap:6px; padding:14px 0 12px; background:#20241e; border:1px solid var(--line); border-radius:12px; }
+    .string small { font:10px monospace; color:var(--muted); }
+    .string strong { font-size:24px; font-weight:500; }
+    .string span { font:9px monospace; color:var(--muted); }
+    .string.active { background:var(--lime); border-color:var(--lime); color:#1a2210; box-shadow:0 4px 22px #d3fc7910; }
+    .string.active small,.string.active span { color:#46532f; }
+    .string.done::after { content:"✓"; position:absolute; top:5px; right:7px; color:var(--lime); font-size:10px; }
+    .string.active.done::after { color:#1a2210; }
+    aside { display:flex; flex-direction:column; gap:16px; }
+    .panel { background:var(--panel); border:1px solid var(--line); border-radius:20px; padding:24px; }
+    .panel-heading { display:flex; align-items:center; justify-content:space-between; }
+    h2 { margin:0; font-size:14px; font-weight:500; }.tiny { font:10px monospace; color:var(--muted); letter-spacing:1px; }
+    .guitar-art { height:173px; position:relative; overflow:hidden; margin:16px 0 20px; background:radial-gradient(ellipse,#d3fc7909,transparent 70%); }
+    .guitar-art svg { margin:auto; width:160px; height:190px; transform:rotate(-17deg); }
+    .preset-label { display:block; font-size:11px; color:var(--muted); margin-bottom:9px; }
+    select { width:100%; padding:12px; border:1px solid #41483a; border-radius:8px; background:#24291f; font-size:12px; }
+    .tuning-notes { font:11px monospace; color:var(--lime); letter-spacing:3px; margin:14px 0 0; }
+    .calibration { display:flex; justify-content:space-between; align-items:center; padding:19px 0; border-bottom:1px solid var(--line); gap:10px; }
+    .calibration label { color:var(--muted); font-size:12px; }
+    .calibration select { width:96px; padding:8px; font:12px monospace; background:transparent; }
+    .progress-copy { display:flex; justify-content:space-between; margin:20px 0 12px; font-size:11px; color:var(--muted); }
+    .progress-bars { display:grid; grid-template-columns:repeat(6,1fr); gap:5px; }
+    .progress-bars i { height:4px; background:#363d31; border-radius:4px; }.progress-bars i.done { background:var(--lime); }
+    .tip { background:transparent; padding:20px 24px; }.tip h2 { color:var(--lime); font-size:12px; }.tip p { color:var(--muted); font-size:12px; line-height:1.9; margin:10px 0 0; }
+    .bottom { display:flex; justify-content:space-between; align-items:center; gap:24px; padding:22px 0; }
+    .session { display:flex; gap:12px; align-items:center; }.session-dot { width:8px; height:8px; border-radius:50%; background:var(--lime); box-shadow:0 0 0 5px #d3fc7910; }
+    .session strong { display:block; font-size:12px; font-weight:500; }.session small { display:block; color:var(--muted); font-size:11px; margin-top:5px; }
+    .actions { display:flex; gap:10px; }.action { padding:13px 20px; border:1px solid var(--line); border-radius:9px; background:transparent; font-size:12px; }.action.primary { color:#1c2412; background:var(--lime); border-color:var(--lime); font-weight:600; }
+    .demo { display:flex; align-items:center; gap:18px; border-top:1px solid var(--line); padding:20px 0; font-size:11px; color:var(--muted); }.demo label { white-space:nowrap; }.demo input { accent-color:var(--lime); width:180px; cursor:pointer; }.demo output { min-width:58px; font-family:monospace; color:var(--text); }.demo button { background:transparent; color:var(--lime); border:0; font-size:11px; padding:10px; }.demo .demo-tag { margin-left:auto; font:10px monospace; letter-spacing:1px; }
+    footer { display:flex; justify-content:space-between; color:#697060; font:10px monospace; letter-spacing:1px; padding:12px 0 26px; }
+    dialog { color:var(--text); background:#1b2019; border:1px solid var(--line); border-radius:20px; width:min(400px,calc(100% - 32px)); padding:28px; }dialog::backdrop { background:#000a; backdrop-filter:blur(6px); }dialog h2 { font-size:20px; }dialog p { color:var(--muted); line-height:1.9; font-size:13px; }dialog .action { margin-top:12px; width:100%; }
+    @media(min-width:1500px) { .shell { padding-top:24px; } }
+    @media(max-width:1000px) { .shell { padding:0 28px; }.workspace { grid-template-columns:minmax(0,1fr) 270px; }.panel { padding:20px; }.instrument-top { padding:20px; }.meter { margin-left:25px; margin-right:25px; }.string-section { padding:20px; }.strings { gap:6px; }.intro p { max-width:180px; text-align:right; line-height:1.7; } }
+    @media(max-width:740px) { .shell { padding:0 20px; }header { height:76px; }.brand { font-size:21px; }.brand span,.edition { display:none; }.intro { padding:26px 0 22px; }h1 { font-size:29px; }.intro p { font-size:11px; max-width:125px; }.workspace { grid-template-columns:1fr; gap:14px; }.instrument { border-radius:20px; }.instrument-top { padding:18px; }.note { font-size:100px; }.meter { margin-top:22px; }.wave { margin-top:18px; height:42px; }.string-section { padding:18px 14px; }.string { padding:12px 0; }.string strong { font-size:22px; }.string span { font-size:8px; }aside { display:grid; grid-template-columns:1fr 1fr; gap:12px; }.panel { padding:18px; border-radius:16px; }.guitar-art,.tip { display:none; }.preset-label { margin-top:20px; }.tuning-notes { font-size:9px; letter-spacing:1px; }.calibration { padding:16px 0; flex-wrap:wrap; }.calibration select { width:100%; }.progress-copy { margin-top:16px; font-size:10px; }.bottom { align-items:start; flex-direction:column; gap:18px; }.actions { width:100%; }.actions .action { flex:1; }.demo { flex-wrap:wrap; gap:10px; }.demo input { flex:1; min-width:90px; }.demo .demo-tag { display:none; }footer { font-size:8px; letter-spacing:.5px; }.signal { font-size:9px; } }
+    /* Android-first: the same compact app canvas at every viewport width. */
+    body { background:#090b09; }
+    .shell { width:100%; max-width:440px; min-height:100dvh; padding:env(safe-area-inset-top,0px) 20px env(safe-area-inset-bottom,0px); background:var(--bg); }
+    header { height:68px; border-bottom:0; }
+    .brand { font-size:21px; gap:9px; }.brand svg { width:26px; height:26px; }
+    .brand span,.edition { display:none; }.icon-btn { width:48px; height:48px; }
+    .intro { padding:14px 0 22px; align-items:start; }.intro p { display:none; }
+    .kicker { font-size:9px; letter-spacing:1.8px; }h1 { font-size:26px; margin-top:10px; letter-spacing:-1px; }
+    .workspace { display:flex; flex-direction:column; gap:14px; }
+    .instrument { border-radius:22px; }.instrument-top { padding:14px; }
+    .segmented { padding:3px; }.segmented button { padding:0 11px; min-height:42px; font-size:11px; }
+    .signal { font-size:8px; gap:4px; }.signal i { width:2px; }
+    .readout { padding-top:9px; }.readout-label { font-size:11px; }.note { font-size:104px; margin-top:3px; }.note sub { font-size:25px; }.frequency { font-size:11px; }
+    .meter { margin:20px 25px 0; }.pitch-status { margin-top:22px; font-size:16px; }.guidance { font-size:11px; }
+    .wave { height:38px; margin-top:18px; }
+    .string-section { padding:16px 12px 18px; }.section-meta { font-size:10px; margin-bottom:12px; }.strings { gap:6px; }
+    .string { min-height:82px; padding:12px 0; border-radius:10px; }.string strong { font-size:22px; }.string span { font-size:7px; }
+    aside { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); gap:10px; }
+    .panel { padding:15px 12px; border-radius:16px; }.panel h2 { font-size:12px; }.tiny,.guitar-art,.tip { display:none; }
+    .preset-label { margin-top:14px; font-size:10px; margin-bottom:7px; }select { min-height:48px; font-size:10px; padding:8px; }
+    .tuning-notes { font-size:8px; letter-spacing:.4px; margin-top:10px; white-space:nowrap; }
+    .calibration { padding:12px 0 0; border:0; flex-wrap:wrap; gap:7px; }.calibration label { font-size:10px; }.calibration select { width:100%; padding:8px; font-size:11px; }
+    .progress-copy { font-size:9px; margin:12px 0 8px; }.progress-bars { gap:4px; }
+    .bottom { flex-direction:column; align-items:stretch; gap:16px; padding:20px 0 18px; }
+    .session { padding-left:5px; }.session strong { font-size:11px; }.session small { font-size:10px; line-height:1.6; }
+    .actions { width:100%; gap:10px; }.actions .action { flex:1; min-height:52px; font-size:12px; padding:12px; border-radius:14px; }
+    .demo { flex-wrap:wrap; gap:10px; padding:16px 0 8px; }.demo label { width:100%; font-size:10px; }.demo input { flex:1; min-width:80px; height:32px; width:auto; }.demo output { min-width:45px; }
+    .demo button { min-height:44px; padding:10px 12px; border:1px solid var(--line); border-radius:10px; }.demo .demo-tag { display:none; }
+    footer { justify-content:center; padding:16px 0 20px; font-size:8px; letter-spacing:1px; }footer span:last-child { display:none; }
+    @media(min-width:600px) { .shell { margin:24px auto; border:1px solid var(--line); border-radius:32px; overflow:hidden; min-height:0; box-shadow:0 30px 100px #0006; } }
+    @media(max-width:360px) { .shell { padding-left:14px; padding-right:14px; }h1 { font-size:24px; }.signal { font-size:7px; }.segmented button { padding:0 8px; }.tuning-notes { font-size:7px; } }
+    /* One Android screen: allocate remaining height to the tuning instrument. */
+    html,body { height:100%; overflow:hidden; }
+    .shell { height:100dvh; min-height:0; display:flex; flex-direction:column; padding-left:16px; padding-right:16px; }
+    header { height:56px; flex-shrink:0; }.intro,footer { display:none; }
+    main { flex:1; min-height:0; display:flex; flex-direction:column; }
+    .workspace { flex:1; min-height:0; gap:10px; }
+    .instrument { flex:1; min-height:0; display:flex; flex-direction:column; border-radius:18px; }
+    .instrument-top { padding:8px 12px; flex-shrink:0; }.segmented button { min-height:36px; }
+    .readout { flex:1; min-height:0; display:flex; flex-direction:column; justify-content:center; padding:0 12px; }
+    .note { font-size:clamp(64px,12dvh,104px); line-height:1.05; margin:3px 0; }
+    .meter { flex-shrink:0; margin:6px 24px 0; padding-top:12px; }.meter-ticks { height:34px; }.sweet-zone { top:12px; height:34px; }.pointer { top:5px; height:43px; }.meter-ticks i.center { height:32px; }.meter-labels { margin-top:4px; }
+    .pitch-status { flex-shrink:0; margin:12px 0 5px; font-size:15px; }.guidance { flex-shrink:0; font-size:10px; margin-bottom:12px; }.wave { display:none; }
+    .string-section { flex-shrink:0; padding:10px 10px 12px; }.section-meta { margin-bottom:8px; }.string { min-height:64px; padding:7px 0; gap:4px; }.string strong { font-size:21px; }
+    aside { flex-shrink:0; gap:8px; }.panel { padding:10px; border-radius:12px; }.panel-heading { display:none; }.preset-label { margin:0 0 5px; font-size:9px; }select { min-height:36px; }.tuning-notes { margin-top:6px; font-size:7px; }
+    .calibration { padding:0; gap:5px; flex-wrap:nowrap; }.calibration label { white-space:nowrap; font-size:9px; }.calibration select { min-height:36px; width:78px; font-size:10px; padding:5px; }.progress-copy { margin:9px 0 6px; }
+    .bottom { flex-shrink:0; padding:10px 0; gap:0; }.session { display:none; }.actions .action { min-height:46px; border-radius:12px; }
+    .demo { flex-shrink:0; padding:6px 0 10px; gap:6px; font-size:9px; flex-wrap:nowrap; border:0; }.demo label { width:auto; font-size:9px; }.demo input { height:28px; min-width:40px; }.demo output { min-width:38px; }.demo button { min-height:36px; padding:6px; font-size:9px; }#reset { display:none; }
+    @media(min-width:600px) { .shell { height:min(860px,calc(100dvh - 32px)); margin:16px auto; border-radius:26px; } }
+    @media(max-height:640px) { header { height:48px; }.instrument-top { padding:5px 10px; }.segmented button { min-height:32px; }.note { font-size:64px; }.readout-label { font-size:10px; }.pitch-status { margin-top:7px; }.guidance { margin-bottom:8px; }.string-section { padding:7px 8px; }.section-meta { display:none; }.string { min-height:56px; }.string span { display:none; }.panel { padding:8px; }.tuning-notes { display:none; }.actions .action { min-height:42px; }.bottom { padding:8px 0; } }
+    @media(prefers-reduced-motion:reduce) { *,*::before,*::after { transition:none!important; animation:none!important; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div class="brand"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M5 5L27 27M27 5L5 27M16 1V9M16 23V31M1 16H9M23 16H31" stroke="currentColor" stroke-width="3"/></svg>XSTAR<span>GUITAR LAB</span></div>
+      <div class="header-right"><span class="edition">PRECISION IN EVERY STRING.</span><button class="icon-btn" id="help" aria-label="查看使用说明"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M9.5 8.5a2.5 2.5 0 015 0c0 2-2.5 2-2.5 4M12 16v1" stroke="currentColor" stroke-width="1.5"/></svg></button></div>
+    </header>
+    <main>
+      <div class="workspace">
+        <section class="instrument" aria-label="调音仪表">
+          <div class="instrument-top"><div class="segmented" aria-label="调音模式"><button class="active" data-mode="auto" aria-pressed="true">自动识别</button><button data-mode="manual" aria-pressed="false">手动选弦</button></div><div class="signal" id="signal"><i></i><i></i><i></i><span id="signal-label">DEMO SIGNAL</span></div></div>
+          <div class="readout"><div class="readout-label" id="target-label">6 弦 · 低音 E</div><div class="note"><span id="note">E</span><sub id="octave">2</sub></div><div class="frequency"><strong id="frequency">81.84</strong> Hz <span aria-hidden="true">/</span> 目标 <span id="target-frequency">82.41</span> Hz</div></div>
+          <div class="meter" aria-label="音准偏差刻度"><div class="sweet-zone"></div><div class="meter-ticks" id="ticks" aria-hidden="true"></div><div class="pointer" id="pointer"></div><div class="meter-labels"><span>−50</span><span>−25</span><span>0</span><span>+25</span><span>+50</span></div></div>
+          <div class="pitch-status"><span id="status">↗ 音偏低</span><span class="cents" id="cents">−12 cents</span></div><p class="guidance" id="guidance">稍微拧紧弦钮，再拨一次琴弦</p>
+          <svg class="wave" viewBox="0 0 700 60" preserveAspectRatio="none" aria-hidden="true"><path class="baseline" d="M0 30H700"/><path id="wave-path" d="M0 30H700"/></svg>
+          <div class="string-section"><div class="section-meta"><span>选择琴弦</span><span>LOW → HIGH</span></div><div class="strings" id="strings"></div></div>
+        </section>
+        <aside>
+          <section class="panel"><div class="panel-heading"><h2>调弦配置</h2><span class="tiny">01 / SETUP</span></div>
+            <div class="guitar-art" aria-hidden="true"><svg viewBox="0 0 160 210" fill="none"><defs><linearGradient id="wood" x1="35" y1="0" x2="125" y2="180" gradientUnits="userSpaceOnUse"><stop stop-color="#3c4533"/><stop offset="1" stop-color="#20281c"/></linearGradient></defs><path d="M58 11Q80 0 102 11L112 121Q112 138 97 146L94 210H66L63 146Q48 138 48 121Z" fill="url(#wood)" stroke="#64744a"/><path d="M65 148H95M65 155H95" stroke="#cbd6b9" stroke-width="3"/><path d="M69 35L70 210M74 59L74 210M79 83L78 210M91 35L90 210M86 59L86 210M81 83L82 210" stroke="#aab69a" stroke-width=".8"/><g fill="#252d20" stroke="#78875f"><rect x="35" y="27" width="17" height="12" rx="5"/><rect x="33" y="52" width="17" height="12" rx="5"/><rect x="31" y="77" width="17" height="12" rx="5"/><rect x="108" y="27" width="17" height="12" rx="5"/><rect x="110" y="52" width="17" height="12" rx="5"/><rect x="112" y="77" width="17" height="12" rx="5"/></g><g fill="#9cae7c" stroke="#39432d"><circle cx="68" cy="33" r="5"/><circle cx="73" cy="58" r="5"/><circle cx="78" cy="83" r="5"/><circle cx="92" cy="33" r="5"/><circle cx="87" cy="58" r="5"/><circle cx="82" cy="83" r="5"/></g><path d="M74 113L86 125M86 113L74 125" stroke="#d3fc79" stroke-width="2"/></svg></div>
+            <label class="preset-label" for="preset">吉他 · 六弦</label><select id="preset"><option value="standard">标准调弦 / Standard</option><option value="dropd">降 D 调弦 / Drop D</option><option value="openg">开放 G 调弦 / Open G</option></select><p class="tuning-notes" id="tuning-notes">E2 · A2 · D3 · G3 · B3 · E4</p>
+          </section>
+          <section class="panel"><div class="panel-heading"><h2>精度与进度</h2><span class="tiny">02 / DETAIL</span></div><div class="calibration"><label for="reference">标准音 A4</label><select id="reference"><option>432 Hz</option><option selected>440 Hz</option><option>442 Hz</option></select></div><div class="progress-copy"><span>本次已调准</span><span id="progress-text">0 / 6 根弦</span></div><div class="progress-bars" id="progress-bars" aria-label="已调准 0 根弦"><i></i><i></i><i></i><i></i><i></i><i></i></div></section>
+          <section class="panel tip"><h2>↗ 调音小贴士</h2><p>一次只拨一根弦，让声音自然延续。由偏低慢慢调高，音准会更稳定。</p></section>
+        </aside>
+      </div>
+      <div class="bottom"><div class="session"><div class="session-dot" id="session-dot"></div><div><strong id="session-title">演示模式已就绪</strong><small id="session-description">拖动下方滑块，体验从偏音到调准的反馈</small></div></div><div class="actions"><button class="action" id="play-tone">♪ 播放参考音</button><button class="action primary" id="pause">Ⅱ 暂停演示</button></div></div>
+      <section class="demo" aria-label="原型演示控制"><label for="deviation">模拟音准</label><span>偏低</span><input id="deviation" type="range" min="-50" max="50" value="-12" aria-label="模拟音准偏差（音分）"><span>偏高</span><output id="deviation-output" for="deviation">−12 ct</output><button id="in-tune">一键调准 ✓</button><button id="reset">重置</button><span class="demo-tag">INTERACTIVE PROTOTYPE / V.01</span></section>
+    </main>
+    <footer><span>XSTAR GUITAR LAB © 2026</span><span>LESS NOISE. MORE MUSIC.</span></footer>
+  </div>
+  <dialog id="help-dialog"><h2>找到你的音准</h2><p>这是可交互的界面原型，当前音频输入为模拟信号。选择琴弦或调弦配置，再拖动「模拟音准」滑块，体验偏低、偏高与调准状态。</p><p>「播放参考音」会生成当前琴弦的标准音。自动模式中，调准后会切换到下一根未完成的弦；手动模式可以专注调整指定琴弦。</p><button class="action primary" id="close-help">开始体验 ↗</button></dialog>
+  <script>
+    'use strict';
+    const $ = id => document.getElementById(id);
+    const presets = { standard:[40,45,50,55,59,64], dropd:[38,45,50,55,59,64], openg:[38,43,50,55,59,62] };
+    const names = ['C','C♯','D','D♯','E','F','F♯','G','G♯','A','A♯','B'];
+    let selected = 0, cents = -12, mode = 'auto', paused = false, completed = new Set(), nextTimer, audio, oscillator, toneTimer;
+    function notes() { return presets[$('preset').value]; }
+    function noteName(midi) { return names[midi % 12]; }
+    function octave(midi) { return Math.floor(midi / 12) - 1; }
+    function targetHz(midi) { return parseInt($('reference').value,10) * Math.pow(2,(midi - 69)/12); }
+    function signed(value) { return value > 0 ? '+' + value : value < 0 ? '−' + Math.abs(value) : '0'; }
+    function cancelAdvance() { clearTimeout(nextTimer); }
+    function stopTone() { clearTimeout(toneTimer); if (oscillator) { oscillator.stop(); oscillator = null; } $('play-tone').textContent = '♪ 播放参考音'; }
+    function renderStrings() {
+      $('strings').replaceChildren();
+      notes().forEach((midi,index) => {
+        const button = document.createElement('button');
+        button.className = 'string' + (index === selected ? ' active' : '') + (completed.has(index) ? ' done' : '');
+        button.setAttribute('aria-pressed', String(index === selected));
+        button.setAttribute('aria-label', `${6-index} 弦 ${noteName(midi)}${octave(midi)}${completed.has(index) ? '，已调准' : ''}`);
+        button.innerHTML = `<small>0${6-index}</small><strong>${noteName(midi)}</strong><span>${targetHz(midi).toFixed(2)} Hz</span>`;
+        button.addEventListener('click', () => { cancelAdvance(); stopTone(); selected = index; cents = completed.has(index) ? 0 : -12; render(); });
+        $('strings').append(button);
+      });
+      $('tuning-notes').textContent = notes().map(midi => noteName(midi) + octave(midi)).join(' · ');
+    }
+    function render() {
+      const midi = notes()[selected], tuned = Math.abs(cents) <= 3;
+      document.documentElement.style.setProperty('--status', tuned ? 'var(--lime)' : 'var(--orange)');
+      $('note').textContent = noteName(midi); $('octave').textContent = octave(midi);
+      $('target-label').textContent = `${6-selected} 弦 · ${selected === 0 ? '低音 ' : selected === 5 ? '高音 ' : ''}${noteName(midi)}`;
+      $('frequency').textContent = (targetHz(midi) * Math.pow(2,cents/1200)).toFixed(2);
+      $('target-frequency').textContent = targetHz(midi).toFixed(2);
+      $('pointer').style.left = `${50+cents}%`;
+      $('cents').textContent = `${signed(cents)} cents`;
+      $('status').textContent = paused ? 'Ⅱ 演示已暂停' : tuned ? '✓ 音准刚刚好' : cents < 0 ? '↗ 音偏低' : '↘ 音偏高';
+      $('guidance').textContent = paused ? '点击继续，恢复交互演示' : completed.size === 6 ? '六根弦已全部调准，开始你的演奏吧' : tuned ? '保持这个状态，准备好下一根弦' : cents < 0 ? '稍微拧紧弦钮，再拨一次琴弦' : '稍微放松弦钮，再拨一次琴弦';
+      $('deviation').value = cents; $('deviation-output').value = `${signed(cents)} ct`;
+      $('deviation').disabled = paused; $('in-tune').disabled = paused;
+      $('progress-text').textContent = `${completed.size} / 6 根弦`;
+      $('progress-bars').setAttribute('aria-label', `已调准 ${completed.size} 根弦`);
+      [...$('progress-bars').children].forEach((bar,index) => bar.classList.toggle('done',completed.has(index)));
+      renderStrings();
+    }
+    function updateCents(value) {
+      cancelAdvance(); cents = value;
+      if (Math.abs(cents) <= 3) completed.add(selected); else completed.delete(selected);
+      render();
+      if (mode === 'auto' && Math.abs(cents) <= 3 && completed.size < 6 && !paused) {
+        nextTimer = setTimeout(() => { stopTone(); selected = notes().findIndex((_,index) => !completed.has(index)); cents = -12; render(); },1400);
+      }
+    }
+    for (let i=0; i<=40; i++) { const tick = document.createElement('i'); tick.className = i === 20 ? 'center' : i % 10 === 0 ? 'major' : ''; $('ticks').append(tick); }
+    $('deviation').addEventListener('input',event => updateCents(Number(event.target.value)));
+    $('in-tune').addEventListener('click',() => updateCents(0));
+    function reset() { cancelAdvance(); stopTone(); completed.clear(); selected=0; cents=-12; render(); }
+    $('reset').addEventListener('click',reset);
+    $('preset').addEventListener('change',reset); $('reference').addEventListener('change',reset);
+    document.querySelectorAll('[data-mode]').forEach(button => button.addEventListener('click',() => {
+      cancelAdvance(); mode=button.dataset.mode;
+      document.querySelectorAll('[data-mode]').forEach(item => { item.classList.toggle('active',item === button); item.setAttribute('aria-pressed',String(item === button)); });
+      if (!paused) updateCents(cents);
+    }));
+    $('pause').addEventListener('click',() => {
+      cancelAdvance(); paused = !paused;
+      $('pause').textContent = paused ? '▷ 继续演示' : 'Ⅱ 暂停演示';
+      $('signal').classList.toggle('paused',paused); $('signal-label').textContent = paused ? 'SIGNAL PAUSED' : 'DEMO SIGNAL';
+      $('session-dot').style.background = paused ? '#62695c' : 'var(--lime)';
+      $('session-title').textContent = paused ? '演示已暂停' : '演示模式已就绪';
+      if (paused) { stopTone(); render(); } else updateCents(cents);
+    });
+    $('play-tone').addEventListener('click',async () => {
+      if (oscillator) { stopTone(); return; }
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) throw new Error('Audio unavailable');
+        audio = audio || new AudioContextClass(); await audio.resume();
+        oscillator = audio.createOscillator(); const gain = audio.createGain();
+        oscillator.type = 'sine'; oscillator.frequency.value = targetHz(notes()[selected]);
+        gain.gain.setValueAtTime(0,audio.currentTime); gain.gain.linearRampToValueAtTime(.12,audio.currentTime+.06); gain.gain.setValueAtTime(.12,audio.currentTime+1.7); gain.gain.linearRampToValueAtTime(0,audio.currentTime+2);
+        oscillator.connect(gain); gain.connect(audio.destination); oscillator.start();
+        $('play-tone').textContent = '■ 停止参考音'; toneTimer = setTimeout(stopTone,2100);
+      } catch { $('session-description').textContent = '当前浏览器无法播放参考音，请使用新版 Chrome 或 Edge。'; }
+    });
+    $('help').addEventListener('click',() => $('help-dialog').showModal());
+    $('close-help').addEventListener('click',() => $('help-dialog').close());
+    $('help-dialog').addEventListener('click',event => { if (event.target === $('help-dialog')) { const r=event.target.getBoundingClientRect(); if(event.clientX<r.left || event.clientX>r.right || event.clientY<r.top || event.clientY>r.bottom) event.target.close(); } });
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let lastFrame=0;
+    function drawWave(time) {
+      if (time-lastFrame > 50) {
+        lastFrame=time; let path='';
+        for(let x=0;x<=700;x+=3) { const envelope=Math.pow(Math.sin(x/700*Math.PI),4); const amplitude=paused ? 0 : 17; const y=30+Math.sin(x*.16-(reducedMotion.matches ? 0 : time*.003))*amplitude*envelope; path += `${x===0?'M':'L'}${x} ${y.toFixed(2)} `; }
+        $('wave-path').setAttribute('d',path);
+      }
+      requestAnimationFrame(drawWave);
+    }
+    render(); requestAnimationFrame(drawWave);
+  </script>
+</body>
+</html>

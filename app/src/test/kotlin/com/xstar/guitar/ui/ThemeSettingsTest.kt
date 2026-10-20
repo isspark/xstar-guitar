@@ -6,11 +6,11 @@ import org.junit.Test
 
 class ThemeSettingsTest {
     @Test
-    fun defaultSettingsUseAuroraTheme() {
+    fun defaultSettingsUsePulseTheme() {
         val settings = ThemeSettings()
 
-        assertEquals(ThemePreset.Aurora, settings.preset)
-        assertEquals(ThemePreset.Aurora.accent, settings.accent)
+        assertEquals(ThemePreset.Pulse, settings.preset)
+        assertEquals(ThemePreset.Pulse.accent, settings.accent)
         assertTrue(settings.glow)
     }
 

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#090c0b">
+<title>XSTAR · 六弦光轨调音器</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden}body{background:#080a0c;color:#edf1ec;font-family:"Segoe UI","Microsoft YaHei",sans-serif}button,select,input{font:inherit}button{cursor:pointer}button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--accent,#caff7a);outline-offset:3px}
+.preview{height:100dvh;display:flex;flex-direction:column;align-items:center;padding:16px;gap:12px}.chooser{display:flex;gap:6px;width:100%;max-width:440px;flex-shrink:0}.chooser button{flex:1;min-height:44px;color:#8b929b;border:1px solid #282d34;background:#13171c;border-radius:10px;font-size:11px}.chooser button.active{color:#fff;border-color:#727b88;background:#2a3039}.phone{--accent:#cbff78;--muted:#7e8c81;--line:#283229;--warn:#ffc891;--feedback:var(--warn);position:relative;flex:1;min-height:0;width:100%;max-width:410px;max-height:860px;display:flex;flex-direction:column;overflow:hidden;padding:0 22px;background:#101510;border:1px solid #29322a;border-radius:30px;box-shadow:0 24px 80px #0008;color:#f2f6ee;transition:background .3s}
+.appbar{height:64px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}.logo{font-size:17px;font-weight:800;letter-spacing:1px}.logo b{color:var(--accent);margin-right:7px}.tools{display:flex;gap:4px}.icon{border:0;color:var(--muted);width:44px;height:44px;background:transparent;border-radius:50%;display:grid;place-items:center}.icon svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.5}.modebar{display:flex;align-items:center;justify-content:space-between;flex-shrink:0;height:38px}.mode{padding:8px 0;color:var(--accent);background:transparent;border:0;font-size:11px;min-height:36px}.tag{color:var(--muted);font:9px monospace;letter-spacing:1px}.tag::before{content:"";display:inline-block;width:4px;height:4px;border-radius:50%;background:var(--accent);margin-right:6px}
+.stage{position:relative;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;flex-direction:column;isolation:isolate}.note-block{text-align:center;z-index:2;position:relative}.string-label{font-size:11px;letter-spacing:1px;color:var(--muted)}.note{font-size:clamp(74px,15dvh,128px);letter-spacing:-7px;font-weight:500;line-height:1.1}.note sub{font-size:22px;letter-spacing:0;vertical-align:baseline;margin-left:6px;color:var(--muted)}.hz{font:11px monospace;color:var(--muted);letter-spacing:.5px}.status{font-size:13px;color:var(--feedback);margin-top:20px;text-align:center;position:relative;z-index:2}.status span{font:10px monospace;margin-left:8px;opacity:.7}.hint{margin:9px 0 0;color:var(--muted);font-size:10px;text-align:center;position:relative;z-index:2}
+.linear{position:relative;width:100%;height:50px;margin-top:24px;flex-shrink:0}.tick-track{position:absolute;top:13px;left:0;right:0;height:24px;background:repeating-linear-gradient(90deg,#53634c 0 1px,transparent 1px calc(100% / 32));mask-image:linear-gradient(transparent,#000 25%,#000 75%,transparent)}.tick-track::after{content:"";position:absolute;left:50%;width:1px;top:0;height:24px;background:var(--accent)}.linear .marker{position:absolute;left:38%;top:8px;height:33px;width:3px;background:var(--feedback);border-radius:4px;box-shadow:0 0 16px var(--feedback);transition:left .25s}.scale{display:flex;justify-content:space-between;position:absolute;bottom:-5px;width:100%;font:8px monospace;color:var(--muted)}.scale span:nth-child(2){color:var(--accent)}
+.ring{display:none}.rails{display:none}.strings{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:20px 0 18px;flex-shrink:0}.string{background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:14px;min-height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;position:relative}.string small{font:8px monospace}.string strong{font-size:20px;font-weight:500}.string.active{background:var(--accent);color:#192112;border-color:var(--accent);box-shadow:0 4px 24px #cbff7812}.string.done::after{content:"·";position:absolute;right:5px;top:2px;color:var(--accent)}.string.active.done::after{color:#192112}
+.bottom{display:flex;justify-content:space-between;align-items:center;flex-shrink:0;border-top:1px solid var(--line);padding-top:8px;gap:8px}.preset{max-width:160px;background:transparent;color:var(--muted);border:0;min-height:44px;font-size:11px}.preset option{background:#1c2523;color:#fff}.tone{background:transparent;border:0;min-height:44px;color:var(--accent);font-size:11px;padding:0 8px}.demo{flex-shrink:0;padding:12px 0 16px;display:flex;align-items:center;gap:10px}.demo label{color:var(--muted);font-size:9px;white-space:nowrap}.demo input{width:100%;min-width:30px;accent-color:var(--accent);height:30px}.tune{min-height:36px;white-space:nowrap;background:transparent;border:1px solid var(--line);border-radius:8px;color:var(--accent);font-size:10px;padding:0 10px}.home{flex-shrink:0;width:100px;height:4px;border-radius:4px;background:#c6d1c94d;margin:0 auto 8px}
+/* A: typography and a luminous, almost invisible instrument. */
+[data-theme="a"] .stage::before{content:"";position:absolute;inset:8% 0 10%;background:radial-gradient(ellipse,#a8ff4210,transparent 65%);z-index:-1}[data-theme="a"].tuned .note{text-shadow:0 0 45px #cbff782b;color:var(--accent)}
+/* B: a single orbital instrument, not a card within a card. */
+[data-theme="b"]{--accent:#8ce5ff;--muted:#788ba4;--line:#25374a;--warn:#c1b8ff;background:radial-gradient(ellipse at 50% 42%,#152d43,#0b1421 65%);border-color:#263b51}[data-theme="b"] .logo{font-weight:500;letter-spacing:3px}[data-theme="b"] .linear{display:none}[data-theme="b"] .ring{display:block;position:absolute;top:50%;left:50%;width:min(100%,310px);aspect-ratio:1;transform:translate(-50%,-58%);z-index:0;overflow:visible}[data-theme="b"] .ring .outer{fill:none;stroke:#34516a;stroke-width:1;stroke-dasharray:1 8}[data-theme="b"] .ring .inner{fill:none;stroke:#23415a;stroke-width:1}[data-theme="b"] .ring .arc{fill:none;stroke:var(--accent);stroke-width:2;opacity:.5}[data-theme="b"] .orbit{transform-origin:160px 160px;transition:transform .25s;fill:var(--feedback);filter:drop-shadow(0 0 7px var(--feedback))}[data-theme="b"] .note{font-size:clamp(72px,13dvh,110px)}[data-theme="b"] .status{margin-top:60px}[data-theme="b"] .string{border:0;border-radius:50%;min-height:52px;gap:4px}[data-theme="b"] .string.active{color:var(--accent);background:#8ce5ff14;box-shadow:inset 0 0 0 1px #8ce5ff66}[data-theme="b"].tuned .ring .inner{stroke:var(--accent);filter:drop-shadow(0 0 10px #8ce5ff55)}
+/* C: six real visual axes, with pitch moving vertically on the active string. */
+[data-theme="c"]{--accent:#ffa877;--muted:#9a8980;--line:#3a2d2b;--warn:#d9c5ff;background:#171111;border-color:#3e2d28}[data-theme="c"] .logo b{color:#ffa877}[data-theme="c"] .linear{display:none}[data-theme="c"] .rails{position:absolute;display:flex;justify-content:space-around;inset:0 0 -30px;z-index:-1;mask-image:linear-gradient(transparent,#000 10%,#000 90%,transparent)}.rail{position:relative;width:1px;background:#ffffff09;height:100%}.rail.active{background:linear-gradient(transparent,#ffa87788,transparent);box-shadow:0 0 18px #ffa87733}.rail.active::after{content:"";position:absolute;top:var(--rail-pos,62%);left:-3px;height:7px;width:7px;border-radius:50%;background:var(--feedback);box-shadow:0 0 18px var(--feedback);transition:top .25s}.rail::before{content:"";width:8px;height:1px;background:#ffffff19;position:absolute;top:50%;left:-3px}[data-theme="c"] .note-block{background:radial-gradient(ellipse,#171111 35%,#17111100 70%);padding:20px 50px}[data-theme="c"] .note{font-weight:400}[data-theme="c"] .status{margin-top:14px}[data-theme="c"] .strings{gap:0}[data-theme="c"] .string{border:0;border-radius:0;border-top:1px solid #ffffff0d;min-height:64px}[data-theme="c"] .string.active{background:linear-gradient(#ffa87716,transparent);border-top:2px solid var(--accent);color:var(--accent);box-shadow:none}[data-theme="c"].tuned .rail.active{box-shadow:0 0 28px #ffa87766}
+/* D: restrained, flat and precise. */
+[data-theme="d"]{--accent:#a5d9c4;--muted:#8e9699;--line:#303638;--warn:#d4c9b4;background:#1b2022;border-color:#3a4244}[data-theme="d"] .logo{font-size:14px;letter-spacing:2px;font-weight:500}[data-theme="d"] .logo b{color:var(--muted)}[data-theme="d"] .tag::before{display:none}[data-theme="d"] .note{font-size:clamp(85px,17dvh,140px);font-weight:300}[data-theme="d"] .hz{font-size:10px}[data-theme="d"] .linear{height:20px;margin-top:30px}[data-theme="d"] .tick-track{height:1px;top:8px;background:#596164;mask-image:none}[data-theme="d"] .tick-track::after{height:9px;top:-4px}[data-theme="d"] .linear .marker{height:7px;width:7px;top:5px;border-radius:50%;box-shadow:none}[data-theme="d"] .scale{bottom:-9px}[data-theme="d"] .status{margin-top:30px;font-size:12px}[data-theme="d"] .strings{gap:6px}[data-theme="d"] .string{border:0;border-radius:0;background:transparent;min-height:58px}[data-theme="d"] .string.active{color:var(--accent);background:transparent;box-shadow:none}[data-theme="d"] .string.active::before{content:"";position:absolute;bottom:0;width:18px;height:2px;background:var(--accent)}[data-theme="d"].tuned .note{color:var(--accent)}
+dialog{background:#171e23;color:#e8eef2;border:1px solid #3b464e;border-radius:20px;width:min(360px,calc(100% - 36px));padding:24px}dialog::backdrop{background:#000a;backdrop-filter:blur(8px)}dialog h2{font-size:18px;margin:0 0 12px}dialog p{font-size:12px;line-height:1.9;color:#a0adb6}dialog label{font-size:12px}dialog select{padding:10px;border:1px solid #3b464e;background:#222e35;color:#fff;border-radius:8px;margin:10px 0 16px;width:100%;min-height:44px}dialog button{min-height:44px;width:100%;border:1px solid #46545d;border-radius:8px;background:#2b3943;color:#fff}.scheme-name{font-size:10px;color:#89939f;text-align:center;flex-shrink:0;min-height:14px}
+@media(max-width:520px){.preview{padding:8px 0 0;gap:6px}.chooser{padding:0 10px;gap:4px}.chooser button{font-size:10px;min-height:36px;border-radius:7px}.phone{max-width:440px;border-radius:0;border:0;max-height:none;padding:0 20px}.scheme-name{display:none}.appbar{height:54px}.strings{margin-top:16px;margin-bottom:12px}.demo{padding-bottom:max(8px,env(safe-area-inset-bottom))}.home{display:none}}
+@media(max-height:690px){.appbar{height:44px}.modebar{height:30px}.note{font-size:76px}.linear{margin-top:14px;height:40px}.status{margin-top:14px}.hint{margin-top:6px}.strings{margin:12px 0 8px}.string{min-height:52px}.bottom{padding-top:3px}.demo{padding-top:4px;padding-bottom:6px}[data-theme="b"] .ring{width:230px}[data-theme="b"] .status{margin-top:32px}[data-theme="b"] .note{font-size:70px}[data-theme="d"] .note{font-size:82px}[data-theme="d"] .linear{margin-top:18px}[data-theme="d"] .status{margin-top:20px}.home{margin-bottom:5px}}
+.modebar{justify-content:center}.mode{min-width:120px;text-align:center}
+/* Keep the centered readout, but let the string light show through it. */
+[data-theme="c"] .note-block{background:none}
+[data-theme="c"] .note-block{position:absolute;top:7%;transform:none;padding-top:0}
+[data-theme="c"] .note{color:rgb(242 246 238 / 40%);font-size:clamp(68px,13dvh,112px)}
+[data-theme="c"] .note sub{color:rgb(154 137 128 / 75%)}
+.string-label{opacity:.65}.modebar{justify-content:space-between;height:48px;position:relative}.mode{position:absolute;left:50%;transform:translateX(-50%);min-width:90px;font-size:10px}.preset{max-width:125px;font-size:9px}.strings{margin-bottom:max(20px,env(safe-area-inset-bottom))}
+@media(max-height:690px){[data-theme="c"] .note-block{top:4%;padding-top:0}[data-theme="c"] .note{font-size:68px}}
+.bottom{padding-bottom:max(16px,env(safe-area-inset-bottom))}.stage::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 55%,#ff985509,transparent 65%);z-index:-2;animation:ambient 5s ease-in-out infinite}.rail.active{animation:pluck .65s ease-out,rail-glow 3s ease-in-out .65s infinite}.rail .spark{position:absolute;left:-1px;top:-15%;width:3px;height:65px;background:linear-gradient(transparent,#ffc49c,transparent);border-radius:50%;opacity:0;animation:travel 3.8s ease-in-out infinite;filter:blur(.5px)}.rail.active::after{animation:beacon 2.8s ease-in-out infinite}.phone.sounding .rail.active{animation:resonate .14s ease-in-out infinite,rail-glow 1s ease-in-out infinite}.phone.sounding .note{text-shadow:0 0 32px #ffa87744}.phone.sounding .spark{animation-duration:1.2s}.note{transition:color .3s,text-shadow .3s}.home{margin-top:4px}
+@keyframes pluck{0%,100%{transform:translateX(0)}15%{transform:translateX(4px)}30%{transform:translateX(-3px)}45%{transform:translateX(2px)}65%{transform:translateX(-1px)}}
+@keyframes resonate{0%,100%{transform:translateX(-.8px)}50%{transform:translateX(.8px)}}
+@keyframes rail-glow{0%,100%{opacity:.6}50%{opacity:1}}
+@keyframes beacon{0%,100%{box-shadow:0 0 8px var(--feedback)}50%{box-shadow:0 0 20px var(--feedback),0 0 0 5px #ffa8770b}}
+@keyframes travel{0%{top:95%;opacity:0}15%{opacity:.7}75%{opacity:.5}100%{top:-15%;opacity:0}}
+@keyframes ambient{0%,100%{opacity:.35}50%{opacity:1}}
+@media(max-width:520px){.preview{padding:0;gap:0}.phone{padding-top:env(safe-area-inset-top)}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="preview">
+  <main class="phone" data-theme="c" id="phone" aria-label="六弦光轨 Android 调音器原型">
+    <header class="appbar"><div class="logo"><b>✳</b>XSTAR</div><div class="tools"><button class="icon" id="help" aria-label="原型说明"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 8.5a2.5 2.5 0 015 0c0 2-2.5 2-2.5 4M12 16v1"/></svg></button><button class="icon" id="settings" aria-label="调音设置"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3" fill="currentColor" stroke="none"/><circle cx="15" cy="17" r="3" fill="currentColor" stroke="none"/></svg></button></div></header>
+    <div class="modebar"><select class="preset" id="preset" aria-label="调弦方式"><option value="standard">标准调弦</option><option value="dropd">Drop D</option><option value="openg">Open G</option></select><button class="mode" id="mode">自动识别 ⌄</button></div>
+    <section class="stage" aria-label="音准仪表">
+      <div class="rails" id="rails" aria-hidden="true"></div>
+      <svg class="ring" viewBox="0 0 320 320" aria-hidden="true"><circle class="outer" cx="160" cy="160" r="146"/><circle class="inner" cx="160" cy="160" r="130"/><path class="arc" d="M56 99A120 120 0 01264 99"/><path d="M160 24v12" stroke="var(--accent)"/><g class="orbit" id="orbit"><circle cx="160" cy="160" r="0"/><circle cx="160" cy="30" r="5"/></g></svg>
+      <div class="note-block"><div class="string-label" id="string-label">第 6 弦 · 低音</div><div class="note"><span id="note">E</span><sub id="octave">2</sub></div></div>
+      <div class="linear" aria-hidden="true"><div class="tick-track"></div><div class="marker" id="marker"></div><div class="scale"><span>−50</span><span>0</span><span>+50</span></div></div>
+    </section>
+    <section class="strings" id="strings" aria-label="选择琴弦"></section>
+    <div class="home" aria-hidden="true"></div>
+  </main>
+</div>
+<dialog id="settings-dialog"><h2>调音设置</h2><label for="reference">标准音 A4</label><select id="reference"><option value="432">432 Hz</option><option value="440" selected>440 Hz</option><option value="442">442 Hz</option></select><button id="reset">重置六弦进度</button><p>已调准 <span id="completed-count">0</span> / 6 根弦。模式切换与选弦都在主界面完成。</p><button id="close-settings">完成</button></dialog>
+<dialog id="help-dialog"><h2>六弦光轨</h2><p>点击光轨或底部音名即可选择并播放标准参考音，同时体验轻颤与共振。再次点击可重播，声音约两秒自动结束。</p><p>光点在弦上表示音准偏差：偏低向上调整，偏高向下调整。主界面保持单屏，标准音设置位于右上角。</p><p>当前是界面原型，音准读数为示例，不采集麦克风。参考音播放不会被计为已调准。</p><button id="close-help">开始体验</button></dialog>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const presets={standard:[40,45,50,55,59,64],dropd:[38,45,50,55,59,64],openg:[38,43,50,55,59,62]};
+const descriptions={a:'A / 极简霓虹 — 黑底、荧光绿、横向精密刻度',b:'B / 星环仪表 — 深蓝、冰蓝光、环形音准反馈',c:'C / 六弦光轨 — 暖黑、橙色弦光、纵向音准反馈',d:'D / 专业极简 — 石墨灰、薄荷绿、克制的读数与线条'};
+const names=['C','C♯','D','D♯','E','F','F♯','G','G♯','A','A♯','B'];
+let selected=0,cents=-12,auto=true,done=new Set(),timer,audio,osc,toneTimer,toneRequest=0;
+function midi(){return presets[$('preset').value][selected]}
+function target(m){return Number($('reference').value)*2**((m-69)/12)}
+function cancel(){clearTimeout(timer)}
+function stopTone(){++toneRequest;clearTimeout(toneTimer);if(osc){osc.stop();osc=null}$('phone').classList.remove('sounding')}
+function render(){
+ const m=midi(),tuned=Math.abs(cents)<=3;
+ $('phone').classList.toggle('tuned',tuned);$('phone').style.setProperty('--feedback',tuned?'var(--accent)':'var(--warn)');
+ $('note').textContent=names[m%12];$('octave').textContent=Math.floor(m/12)-1;
+ $('string-label').textContent=`第 ${6-selected} 弦${selected===0?' · 低音':selected===5?' · 高音':''}`;
+ $('marker').style.left=`${50+cents}%`;$('orbit').style.transform=`rotate(${cents*1.2}deg)`;
+ $('phone').style.setProperty('--rail-pos',`${50-cents*.7}%`);
+ $('completed-count').textContent=done.size;
+ $('strings').replaceChildren();$('rails').replaceChildren();
+ presets[$('preset').value].forEach((value,index)=>{
+  const button=document.createElement('button');button.className='string'+(selected===index?' active':'')+(done.has(index)?' done':'');
+  button.setAttribute('aria-pressed',String(selected===index));button.setAttribute('aria-label',`${6-index} 弦 ${names[value%12]}${done.has(index)?' 已调准':''}`);
+  button.innerHTML=`<small>${6-index}</small><strong>${names[value%12]}</strong>`;
+  button.addEventListener('click',()=>{cancel();stopTone();selected=index;cents=done.has(index)?0:-12;render();playTone()});$('strings').append(button);
+   const rail=document.createElement('div');rail.className='rail'+(selected===index?' active':'');if(selected===index){const spark=document.createElement('i');spark.className='spark';rail.append(spark)}$('rails').append(rail);
+ });
+}
+function update(value){cancel();cents=value;if(Math.abs(value)<=3)done.add(selected);else done.delete(selected);render();if(auto&&Math.abs(value)<=3&&done.size<6)timer=setTimeout(()=>{stopTone();selected=presets[$('preset').value].findIndex((_,i)=>!done.has(i));cents=-12;render()},1300)}
+$('mode').addEventListener('click',()=>{auto=!auto;$('mode').textContent=auto?'自动识别 ⌄':'手动选弦 ⌄';update(cents)});
+function reset(){cancel();stopTone();selected=0;cents=-12;done.clear();render()}
+$('preset').addEventListener('change',reset);$('reference').addEventListener('change',reset);$('reset').addEventListener('click',reset);
+$('settings').addEventListener('click',()=>$('settings-dialog').showModal());$('close-settings').addEventListener('click',()=>$('settings-dialog').close());
+$('help').addEventListener('click',()=>$('help-dialog').showModal());$('close-help').addEventListener('click',()=>$('help-dialog').close());
+async function playTone(){
+ stopTone();const request=toneRequest;
+ try{const Context=window.AudioContext||window.webkitAudioContext;audio=audio||new Context();await audio.resume();if(request!==toneRequest)return;osc=audio.createOscillator();const gain=audio.createGain();osc.frequency.value=target(midi());gain.gain.setValueAtTime(0,audio.currentTime);gain.gain.linearRampToValueAtTime(.1,audio.currentTime+.05);gain.gain.setValueAtTime(.1,audio.currentTime+1.6);gain.gain.linearRampToValueAtTime(0,audio.currentTime+2);osc.connect(gain);gain.connect(audio.destination);osc.start();$('phone').classList.add('sounding');toneTimer=setTimeout(stopTone,2100)}catch{if(request===toneRequest)stopTone()}
+}
+$('rails').addEventListener('click',event=>{const bounds=$('rails').getBoundingClientRect();const index=Math.max(0,Math.min(5,Math.floor((event.clientX-bounds.left)/bounds.width*6)));cancel();stopTone();selected=index;cents=done.has(index)?0:-12;render();playTone()});
+render();
+</script>
+</body>
+</html>

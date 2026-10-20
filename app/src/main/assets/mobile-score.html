@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>XStar Guitar</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    @font-face { font-family: "Bravura"; src: url("font/Bravura.woff2") format("woff2"); }
+    html, body { margin: 0; min-width: 0; background: var(--bg, #101211); color: var(--ink, #F0F2E9); color-scheme: dark; }
+    #score-scroll { padding: 0; overflow: visible; background: var(--line, #30382E); }
+    #score { min-width: 0; width: 100%; transition: none; }
+    #score svg { background: var(--score-paper, #F0F2E9); }
+    #render-status { display: block; padding: 8px; font-size: 12px; }
+    #controls { display: none; }
+  </style>
+  <script>
+    (() => {
+      const params = new URLSearchParams(location.search);
+      const root = document.documentElement;
+      const names = { bg: '--bg', surface: '--surface', ink: '--ink', muted: '--muted', line: '--line', brand: '--brand', accent: '--accent' };
+      Object.entries(names).forEach(([key, variable]) => {
+        const value = params.get(key);
+        if (value) root.style.setProperty(variable, value);
+      });
+    })();
+  </script>
+</head>
+<body>
+  <div id="controls">
+    <span id="engine-status"></span><span id="position-status"></span>
+    <input id="tempo-input"><output id="tempo-output"></output>
+    <input id="jianpu-toggle" type="checkbox" checked><input id="lyrics-toggle" type="checkbox" checked>
+    <input id="follow-toggle" type="checkbox">
+    <span id="score-title"></span><span id="score-source-summary"></span><p id="transcription-notice"></p>
+    <input id="score-file" type="file"><select id="built-in-score"></select>
+    <button id="import-score"></button><button id="play-button"></button><button id="pause-button"></button>
+    <button id="stop-button"></button><button id="zoom-in"></button><button id="zoom-out"></button>
+    <button id="theme-toggle"></button><button id="export-svg"></button>
+  </div>
+  <span id="render-status">正在加载曲谱…</span>
+  <div id="score-scroll"><div id="score" class="score-host"></div></div>
+  <div id="empty-state" class="empty-state"></div>
+  <script src="alphaTab.min.js"></script>
+  <script src="score-image-adapter.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

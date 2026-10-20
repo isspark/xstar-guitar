@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#101211"><title>XSTAR · 练习室</title>
+<style>
+:root{--bg:#080a12;--panel:#111524;--panel2:#171c2d;--ink:#f8f8ff;--muted:#9ca5bb;--line:#2a3045;--violet:#9a7cff;--cyan:#59e0d0;--orange:#ffb86b}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -10%,#302461 0,transparent 34rem),radial-gradient(circle at 100% 65%,#0d4650 0,transparent 28rem),var(--bg);color:var(--ink);font-family:Inter,"Noto Sans SC",sans-serif}.phone{width:min(100%,430px);min-height:100vh;margin:auto;padding:22px 18px 96px}.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:30px}.brand{font-weight:800;letter-spacing:.08em}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:.16em;margin-top:4px}.round,.back{width:42px;height:42px;border:1px solid var(--line);border-radius:15px;background:#111524;color:var(--ink);font-size:18px}.eyebrow{color:var(--cyan);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin:0 0 8px}h1{font-size:35px;line-height:1.08;letter-spacing:-.06em;margin:0}h2{font-size:21px;margin:0;letter-spacing:-.03em}h3{font-size:16px;margin:0}.muted{color:var(--muted);line-height:1.6;font-size:13px}.hero{position:relative;overflow:hidden;border:1px solid #3a3464;background:linear-gradient(145deg,#201b43,#121727 68%);border-radius:28px;padding:23px;margin:24px 0}.hero:after{content:"";position:absolute;width:160px;height:160px;right:-50px;top:-58px;border:25px solid #9a7cff27;border-radius:50%;box-shadow:0 0 60px #8a6aff44}.hero>*{position:relative;z-index:1}.hero h2{font-size:27px;margin:28px 0 8px}.meta{display:flex;gap:15px;color:#cbd0e2;font-size:12px;margin:18px 0}.primary{border:0;background:var(--violet);color:white;border-radius:14px;min-height:49px;padding:0 19px;font-weight:800;box-shadow:0 10px 30px #9a7cff38}.ghost{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:14px;min-height:45px;padding:0 16px;font-weight:700}.section{display:flex;justify-content:space-between;align-items:center;margin:28px 2px 13px}.section a{color:var(--cyan);font-size:12px}.categories{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.cat{min-height:112px;text-align:left;border:1px solid var(--line);border-radius:20px;background:linear-gradient(145deg,var(--panel2),var(--panel));padding:16px;color:var(--ink);cursor:pointer}.cat b{display:block;font-size:23px;margin-bottom:15px}.cat span{display:block;font-size:13px;font-weight:750}.cat small{display:block;color:var(--muted);margin-top:5px}.list{display:grid;gap:10px}.exercise{display:flex;align-items:center;gap:13px;padding:15px;border:1px solid var(--line);border-radius:18px;background:#111524}.sig{width:43px;height:43px;border-radius:14px;display:grid;place-items:center;background:#59e0d01c;color:var(--cyan);font-weight:900}.exercise p{margin:4px 0 0;color:var(--muted);font-size:12px}.tag{margin-left:auto;color:var(--orange);font-size:11px;font-weight:800;white-space:nowrap}.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,430px);display:flex;justify-content:space-around;padding:13px 8px calc(13px + env(safe-area-inset-bottom));background:#080a12dd;backdrop-filter:blur(20px);border-top:1px solid #252a3d}.bottom button{background:none;border:0;color:var(--muted);font-size:11px}.bottom button.active{color:var(--cyan)}.screen{display:none}.screen.active{display:block}.detail-head{display:flex;align-items:center;gap:13px;margin-bottom:28px}.detail-head .back{flex:none}.detail-icon{width:74px;height:74px;border-radius:24px;background:linear-gradient(145deg,#9a7cff,#4c3a9c);display:grid;place-items:center;font-size:32px;margin:20px 0}.goal{border-left:3px solid var(--cyan);padding:2px 0 2px 14px;margin:22px 0}.steps{display:grid;gap:11px;margin:20px 0}.step{display:flex;gap:12px;padding:15px;border:1px solid var(--line);border-radius:17px;background:var(--panel)}.num{color:var(--cyan);font-weight:900}.session{background:#0b0e19;border:1px solid var(--line);border-radius:26px;padding:22px;margin-top:20px;text-align:center}.chord{font-size:78px;font-weight:900;letter-spacing:-.1em;margin:25px 0 8px}.next{color:var(--muted);font-size:13px}.beats{display:flex;justify-content:center;gap:14px;margin:28px 0}.beat{width:16px;height:16px;border:2px solid var(--muted);border-radius:50%}.beat.on{background:var(--cyan);border-color:var(--cyan);box-shadow:0 0 18px var(--cyan)}.full{width:100%;margin-top:18px}
+/* Shared palette: metronome-prototype.html / chord-library-prototype.html. */
+:root {
+  color-scheme: dark;
+  --bg: #101211;
+  --panel: #1b1f1b;
+  --panel2: #1b1f1b;
+  --ink: #f0f2e9;
+  --muted: #a0a899;
+  --line: #30382e;
+  --lime: #d3fc79;
+  --orange: #ffb779;
+  --violet: var(--lime);
+  --cyan: var(--lime);
+}
+body {
+  background: #080a09;
+  font-family: Inter, "Segoe UI", "Microsoft YaHei", sans-serif;
+}
+.phone {
+  background: radial-gradient(ellipse at 90% 0, #d3fc7909, transparent 40%), var(--bg);
+  min-height: 100dvh;
+}
+button { font: inherit; cursor: pointer; }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+.round, .back, .exercise, .session { background: var(--panel); }
+.cat { background: var(--panel); }
+.cat b { color: var(--lime); }
+.primary {
+  background: var(--lime);
+  color: #1a230f;
+  box-shadow: 0 8px 28px #d3fc790a;
+}
+.sig { background: #d3fc7914; color: var(--lime); }
+.meta { color: var(--muted); }
+.bottom { background: #101211ed; border-color: var(--line); }
+.detail-icon {
+  background: linear-gradient(145deg, #242d1b, #181d17);
+  color: var(--lime);
+  border: 1px solid #d3fc7938;
+}
+.beat.on {
+  background: var(--lime);
+  border-color: var(--lime);
+  box-shadow: 0 0 12px #d3fc7930;
+}
+</style></head><body><main class="phone"><header class="top"><div class="brand">XSTAR<small>GUITAR PRACTICE</small></div><button class="round">☰</button></header>
+<section id="home" class="screen active">
+  <p class="eyebrow">Practice room · 练习室</p>
+  <h1>今天，练一个<br>真正能用的技能。</h1>
+  <div class="section"><h2>最近练习</h2><a>历史</a></div>
+  <div class="list">
+    <div class="exercise"><div class="sig">G</div><div><h3>Em-G 和弦转换</h3><p>上次 · 50 BPM · 有几次停顿</p></div><span class="tag">开始</span></div>
+    <div class="exercise"><div class="sig">↓↑</div><div><h3>八分音符上下扫</h3><p>昨天 · 60 BPM · 基本稳定</p></div><span class="tag">复习</span></div>
+  </div>
+  <div class="section"><h2>按技能练习</h2><a>查看全部</a></div>
+  <div class="categories">
+    <button class="cat" onclick="openDetail('LEFT')"><b>⌁</b><span>左手基础</span><small>按弦 · 爬格子</small></button>
+    <button class="cat" onclick="openDetail('RIGHT')"><b>◌</b><span>右手基础</span><small>拨弦 · PIMA</small></button>
+    <button class="cat" onclick="openDetail('CHORD')"><b>G</b><span>和弦与转换</span><small>8 个技能</small></button>
+    <button class="cat" onclick="openDetail('RHYTHM')"><b>♩</b><span>节奏与扫弦</span><small>跟拍 · 重音</small></button>
+    <button class="cat" onclick="openDetail('EAR')"><b>◒</b><span>听音训练</span><small>音高 · 和弦</small></button>
+    <button class="cat" onclick="openDetail('MORE')"><b>✦</b><span>高级技巧</span><small>拍弦 · 击勾弦</small></button>
+  </div>
+</section>
+<section id="detail" class="screen"><div class="detail-head"><button class="back" onclick="show('home')">‹</button><div><p class="eyebrow">Skill library</p><h1 id="detailTitle">和弦与转换</h1></div></div><div class="detail-icon" id="detailIcon">G</div><p class="muted" id="detailDesc">让左手在拍子里移动，从清楚按住一个和弦开始。</p><div class="section"><h2>入门练习</h2><a>筛选⌄</a></div><div class="list"><button class="exercise" onclick="show('practice')"><div class="sig">01</div><div><h3 id="ex1">Em 和弦发声</h3><p>逐弦检查 · 约 5 分钟</p></div><span class="tag">入门</span></button><button class="exercise" onclick="show('practice')"><div class="sig">02</div><div><h3 id="ex2">Em → G 慢速转换</h3><p>4 拍一换 · 50 BPM</p></div><span class="tag">基础</span></button><button class="exercise"><div class="sig">03</div><div><h3>四和弦循环</h3><p>G · D · Em · C</p></div><span class="tag">进阶</span></button></div><div class="section"><h2>你会用在哪里</h2></div><div class="exercise"><div class="sig">♫</div><div><h3>第一首练习曲 · 主歌</h3><p>需要：G · D · Em · C</p></div><span class="tag">应用</span></div></section>
+<section id="practice" class="screen"><div class="detail-head"><button class="back" onclick="show('detail')">‹</button><div><p class="eyebrow">基础 · 和弦转换</p><h1>Em → G</h1></div></div><div class="goal"><b>今天的目标</b><br><span class="muted">在 50 BPM 下完成 8 轮，换弦时保持拍子。</span></div><div class="steps"><div class="step"><span class="num">01</span><div><b>摆好 Em</b><p class="muted">手指靠近品丝，先让六根弦清楚发声。</p></div></div><div class="step"><span class="num">02</span><div><b>找到共同动作</b><p class="muted">提前准备最远移动的手指，不要整只手抬高。</p></div></div><div class="step"><span class="num">03</span><div><b>跟着预备拍开始</b><p class="muted">跟不上时可以降到 40 BPM，不要停下来追赶。</p></div></div></div><button class="primary full" onclick="show('session')">开始练习　→</button><button class="ghost full">听一次慢速示范</button></section>
+<section id="session" class="screen"><div class="detail-head"><button class="back" onclick="show('practice')">‹</button><div><p class="eyebrow">练习进行中 · 02:18</p><h1>保持拍子</h1></div><button class="round">Ⅱ</button></div><div class="session"><div class="muted">当前和弦</div><div class="chord">Em</div><div class="next">下一项　→　G　 · 还剩 2 拍</div><div class="beats"><i class="beat on"></i><i class="beat"></i><i class="beat"></i><i class="beat"></i></div><div class="meta" style="justify-content:center"><span>50 BPM</span><span>第 4 / 8 轮</span></div><button class="primary full">暂停练习</button><button class="ghost full">降低到 40 BPM</button></div></section>
+</main><nav class="bottom"><button class="active" onclick="show('home')">⌂<br>练习</button><button>◫<br>曲谱</button><button>◉<br>工具</button><button>☻<br>我的</button></nav><script>function show(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');scrollTo(0,0)}function openDetail(k){let m={LEFT:['左手基础','⌁','从按弦清晰到换把移动。','单指按弦','1-2-3-4 爬格子'],RIGHT:['右手基础','◌','让每一次触弦都稳定、有方向。','单弦交替拨弦','PIMA 分解基础'],CHORD:['和弦与转换','G','让左手在拍子里移动，从清楚按住一个和弦开始。','Em 和弦发声','Em → G 慢速转换'],RHYTHM:['节奏与扫弦','♩','先听见拍子，再让手跟上拍子。','四分音符下扫','八分音符上下扫'],EAR:['听音训练','◒','训练耳朵辨认音高、节奏与和弦色彩。','听辨高低音','大调与小调'],MORE:['高级技巧','✦','把动作变成表达：拍弦、击勾弦、滑音。','空弦拍弦','击弦与勾弦']}[k];document.getElementById('detailTitle').textContent=m[0];document.getElementById('detailIcon').textContent=m[1];document.getElementById('detailDesc').textContent=m[2];document.getElementById('ex1').textContent=m[3];document.getElementById('ex2').textContent=m[4];show('detail')}</script></body></html>

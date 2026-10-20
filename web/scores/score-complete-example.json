@@ -1,0 +1,178 @@
+{
+  "version": 1,
+  "source": {
+    "id": "score-complete-example",
+    "title": "吉他谱技巧与节奏图鉴（24 小节）",
+    "subtitle": "A–X 分段展示常见吉他谱技巧、节奏与反复记号",
+    "license": "项目原创验证练习"
+  },
+  "alphaTabSource": {
+    "type": "alphatex",
+    "path": "./scores/guitar-techniques.alphaTex.js",
+    "global": "guitarTechniquesAlphaTex",
+    "chordDiagramsMode": "custom-only"
+  },
+  "defaultTempo": 96,
+  "chordDiagrams": {
+    "C": { "frets": ["x", 3, 2, 0, 1, 0], "baseFret": 1 },
+    "Am": { "frets": ["x", 0, 2, 2, 1, 0], "baseFret": 1 },
+    "Em": { "frets": [0, 2, 2, 0, 0, 0], "baseFret": 1 }
+  },
+  "jianpu": { "tracks": [{ "id": "lead", "name": "C 大调旋律（和弦取最高音）", "events": [
+    { "measureIndex": 0, "chord": "C", "events": [
+      { "tick": 0, "value": "1", "durationTicks": 480, "lyric": "分" },
+      { "tick": 480, "value": "3", "durationTicks": 480, "lyric": "解" },
+      { "tick": 960, "value": "5", "durationTicks": 480, "lyric": "和" },
+      { "tick": 1440, "value": "1", "durationTicks": 480, "lyric": "弦" },
+      { "tick": 1920, "value": "3", "durationTicks": 480, "lyric": "空" },
+      { "tick": 2400, "value": "1", "durationTicks": 480, "lyric": "弦" },
+      { "tick": 2880, "value": "5", "durationTicks": 480 },
+      { "tick": 3360, "value": "3", "durationTicks": 480 }
+    ] },
+    { "measureIndex": 1, "chord": "C", "events": [
+      { "tick": 0, "value": "3", "durationTicks": 960, "lyric": "下扫" },
+      { "tick": 960, "value": "3", "durationTicks": 960, "lyric": "上扫" },
+      { "tick": 1920, "value": "3", "durationTicks": 960, "lyric": "琶音" },
+      { "tick": 2880, "value": "3", "durationTicks": 960 }
+    ] },
+    { "measureIndex": 2, "events": [
+      { "tick": 0, "value": "2", "durationTicks": 720, "lyric": "附点" },
+      { "tick": 720, "value": "3", "durationTicks": 240 },
+      { "tick": 960, "value": "3", "durationTicks": 480, "lyric": "延" },
+      { "tick": 1440, "value": "—", "durationTicks": 480 },
+      { "tick": 1920, "value": "2", "durationTicks": 960, "lyric": "音" },
+      { "tick": 2880, "value": "1", "durationTicks": 960, "lyric": "线" }
+    ] },
+    { "measureIndex": 3, "events": [
+      { "tick": 0, "value": "3", "durationTicks": 240, "lyric": "十六" },
+      { "tick": 240, "value": "4", "durationTicks": 240 },
+      { "tick": 480, "value": "5", "durationTicks": 240 },
+      { "tick": 720, "value": "4", "durationTicks": 240 },
+      { "tick": 960, "value": "3", "durationTicks": 120, "lyric": "三十二" },
+      { "tick": 1080, "value": "4", "durationTicks": 120 },
+      { "tick": 1200, "value": "5", "durationTicks": 120 },
+      { "tick": 1320, "value": "4", "durationTicks": 120 },
+      { "tick": 1440, "value": "3", "durationTicks": 120 },
+      { "tick": 1560, "value": "4", "durationTicks": 120 },
+      { "tick": 1680, "value": "5", "durationTicks": 120 },
+      { "tick": 1800, "value": "4", "durationTicks": 120 },
+      { "tick": 1920, "value": "0", "durationTicks": 960, "lyric": "休止" },
+      { "tick": 2880, "value": "3", "durationTicks": 960 }
+    ] },
+    { "measureIndex": 4, "events": [
+      { "tick": 0, "value": "3", "durationTicks": 320, "lyric": "三" },
+      { "tick": 320, "value": "4", "durationTicks": 320 },
+      { "tick": 640, "value": "5", "durationTicks": 320 },
+      { "tick": 960, "value": "5", "durationTicks": 320, "lyric": "连" },
+      { "tick": 1280, "value": "4", "durationTicks": 320 },
+      { "tick": 1600, "value": "3", "durationTicks": 320 },
+      { "tick": 1920, "value": "4", "durationTicks": 960, "lyric": "音" },
+      { "tick": 2880, "value": "3", "durationTicks": 960 }
+    ] },
+    { "measureIndex": 5, "chord": "Am", "events": [
+      { "tick": 0, "value": "6", "durationTicks": 480, "lyric": "六" },
+      { "tick": 480, "value": "3", "durationTicks": 480 },
+      { "tick": 960, "value": "6", "durationTicks": 480, "lyric": "八" },
+      { "tick": 1440, "value": "1", "durationTicks": 480 },
+      { "tick": 1920, "value": "3", "durationTicks": 480, "lyric": "拍" },
+      { "tick": 2400, "value": "1", "durationTicks": 480 }
+    ] },
+    { "measureIndex": 6, "chord": "C", "events": [
+      { "tick": 0, "value": "1", "durationTicks": 1920, "lyric": "三拍" },
+      { "tick": 1920, "value": "5", "durationTicks": 960, "lyric": "长音" }
+    ] },
+    { "measureIndex": 7, "events": [
+      { "tick": 0, "value": "1", "durationTicks": 960, "lyric": "击" },
+      { "tick": 960, "value": "2", "durationTicks": 960, "lyric": "弦" },
+      { "tick": 1920, "value": "2", "durationTicks": 960, "lyric": "勾" },
+      { "tick": 2880, "value": "1", "durationTicks": 960, "lyric": "弦" }
+    ] },
+    { "measureIndex": 8, "events": [
+      { "tick": 0, "value": "1", "durationTicks": 960, "lyric": "连奏" },
+      { "tick": 960, "value": "2", "durationTicks": 960, "lyric": "滑音" },
+      { "tick": 1920, "value": "2", "durationTicks": 960, "lyric": "换把" },
+      { "tick": 2880, "value": "1", "durationTicks": 960, "lyric": "滑音" }
+    ] },
+    { "measureIndex": 9, "events": [
+      { "tick": 0, "value": "1", "durationTicks": 960, "lyric": "下滑入" },
+      { "tick": 960, "value": "2", "durationTicks": 960, "lyric": "上滑入" },
+      { "tick": 1920, "value": "2", "durationTicks": 960, "lyric": "上滑出" },
+      { "tick": 2880, "value": "1", "durationTicks": 960, "lyric": "下滑出" }
+    ] },
+    { "measureIndex": 10, "events": [
+      { "tick": 0, "value": "2", "durationTicks": 960, "lyric": "半音" },
+      { "tick": 960, "value": "2", "durationTicks": 960, "lyric": "全音" },
+      { "tick": 1920, "value": "2", "durationTicks": 960, "lyric": "推放" },
+      { "tick": 2880, "value": "2", "durationTicks": 960, "lyric": "预推" }
+    ] },
+    { "measureIndex": 11, "events": [
+      { "tick": 0, "value": "1", "durationTicks": 960, "lyric": "揉弦" },
+      { "tick": 960, "value": "1", "durationTicks": 960, "lyric": "宽揉" },
+      { "tick": 1920, "value": "1", "durationTicks": 960, "lyric": "颤音" },
+      { "tick": 2880, "value": "1", "durationTicks": 960, "lyric": "轮指" }
+    ] },
+    { "measureIndex": 12, "events": [
+      { "tick": 0, "value": "3", "durationTicks": 960, "lyric": "自然" },
+      { "tick": 960, "value": "1", "durationTicks": 960, "lyric": "人工" },
+      { "tick": 1920, "value": "1", "durationTicks": 960, "lyric": "拨片" },
+      { "tick": 2880, "value": "1", "durationTicks": 960, "lyric": "点触" }
+    ] },
+    { "measureIndex": 13, "chord": "Em", "events": [
+      { "tick": 0, "value": "3", "durationTicks": 960, "lyric": "掌根" },
+      { "tick": 960, "value": "x", "durationTicks": 960, "lyric": "死音" },
+      { "tick": 1920, "value": "1", "durationTicks": 960, "lyric": "幽灵" },
+      { "tick": 2880, "value": "1", "durationTicks": 960, "lyric": "断奏" }
+    ] },
+    { "measureIndex": 14, "events": [
+      { "tick": 0, "value": "3", "durationTicks": 960, "lyric": "持" },
+      { "tick": 960, "value": "1", "durationTicks": 960, "lyric": "续" },
+      { "tick": 1920, "value": "5", "durationTicks": 960, "lyric": "双" },
+      { "tick": 2880, "value": "3", "durationTicks": 960, "lyric": "音" }
+    ] },
+    { "measureIndex": 15, "events": [
+      { "tick": 0, "value": "3", "durationTicks": 960, "lyric": "点" },
+      { "tick": 960, "value": "6", "durationTicks": 960, "lyric": "勾" },
+      { "tick": 1920, "value": "1", "durationTicks": 960, "lyric": "击" },
+      { "tick": 2880, "value": "6", "durationTicks": 960, "lyric": "左手" }
+    ] },
+    { "measureIndex": 16, "events": [
+      { "beatIndex": 1, "tick": 0, "value": "2", "durationTicks": 960, "lyric": "倚音" },
+      { "beatIndex": 2, "tick": 960, "value": "1", "durationTicks": 960, "lyric": "指法" },
+      { "beatIndex": 3, "tick": 1920, "value": "2", "durationTicks": 960, "lyric": "重音" },
+      { "beatIndex": 4, "tick": 2880, "value": "1", "durationTicks": 960, "lyric": "强重音" }
+    ] },
+    { "measureIndex": 17, "events": [
+      { "tick": 0, "value": "3", "durationTicks": 960, "lyric": "打弦" },
+      { "tick": 960, "value": "5", "durationTicks": 960, "lyric": "弹拨" },
+      { "tick": 1920, "value": "x", "durationTicks": 960, "lyric": "拍弦" },
+      { "tick": 2880, "value": "3", "durationTicks": 960, "lyric": "敲板" }
+    ] },
+    { "measureIndex": 18, "events": [
+      { "tick": 0, "value": "3", "durationTicks": 960, "lyric": "摇把" },
+      { "tick": 960, "value": "3", "durationTicks": 960, "lyric": "渐强" },
+      { "tick": 1920, "value": "3", "durationTicks": 960, "lyric": "渐弱" },
+      { "tick": 2880, "value": "3", "durationTicks": 960, "lyric": "力度" }
+    ] },
+    { "measureIndex": 19, "events": [
+      { "tick": 0, "value": "3", "durationTicks": 960, "lyric": "反" },
+      { "tick": 960, "value": "4", "durationTicks": 960, "lyric": "复" },
+      { "tick": 1920, "value": "5", "durationTicks": 960, "lyric": "开" },
+      { "tick": 2880, "value": "3", "durationTicks": 960, "lyric": "始" }
+    ] },
+    { "measureIndex": 20, "events": [
+      { "tick": 0, "value": "4", "durationTicks": 1920, "lyric": "第一" },
+      { "tick": 1920, "value": "3", "durationTicks": 1920, "lyric": "结尾" }
+    ] },
+    { "measureIndex": 21, "events": [
+      { "tick": 0, "value": "5", "durationTicks": 1920, "lyric": "第二" },
+      { "tick": 1920, "value": "3", "durationTicks": 1920, "lyric": "结尾" }
+    ] },
+    { "measureIndex": 22, "chord": "C", "events": [
+      { "tick": 0, "value": "3", "durationTicks": 3840, "lyric": "延长" }
+    ] },
+    { "measureIndex": 23, "events": [
+      { "tick": 0, "value": "0", "durationTicks": 3840 }
+    ] }
+  ] }] },
+  "style": { "showTab": true, "showRhythm": true, "showJianpu": true, "showLyrics": true, "lyricLineCount": 1, "showChordName": true, "showChordDiagram": true }
+}

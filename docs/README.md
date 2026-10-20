@@ -37,8 +37,27 @@
 | [08-risks-and-decisions.md](08-risks-and-decisions.md) | 风险、假设及架构决策记录 | 全员 |
 | [09-backlog.md](09-backlog.md) | Epic、用户故事、优先级和验收 | 产品、开发、测试 |
 | [10-ui-design.md](10-ui-design.md) | 视觉方向、页面规范、组件与交互基线 | 产品、设计、客户端 |
+| [11-alphatab-score-rendering-design.md](11-alphatab-score-rendering-design.md) | alphaTab 统一 SVG 曲谱渲染、简谱扩展、播放与 Android/PC 复用方案 | 客户端、前端、内容 |
+| [12-practice-feature-requirements.md](12-practice-feature-requirements.md) | 从入门到高级的吉他能力体系、练习分类、指导模式、数据与验收要求 | 产品、内容、设计、客户端、测试 |
 
 首轮可交互视觉稿见 [ui-prototype.html](ui-prototype.html)，可直接在桌面或移动浏览器中打开评审。
+
+移动端曲谱学习原型见 [guitar-sheet-mobile-prototype.html](guitar-sheet-mobile-prototype.html)，以手机窄屏为主要画布，包含曲谱首页、曲谱库、曲谱详情、专注跟练、速度控制、循环练习和弦教学与导入入口。
+
+
+节拍器移动端专项设计见 [metronome-design.md](metronome-design.md)，可交互原型见 [metronome-prototype.html](metronome-prototype.html)，支持真实节拍声音、Tap 测速、拍号与重音配置。
+
+练习模块移动端视觉原型：
+
+- [practice-ui-aurora.html](practice-ui-aurora.html)：极光深色，强调沉浸、层次和练习主行动。
+- [practice-ui-editorial.html](practice-ui-editorial.html)：黑白编辑风，强调内容秩序、文字指导和长期学习感。
+- [practice-ui-neon.html](practice-ui-neon.html)：霓虹节拍风，强调 BPM、节奏、状态和训练氛围。
+
+独立概念探索原型（不受现有导航和主题约束）：
+
+- [practice-ui-pulse-os.html](practice-ui-pulse-os.html)：把练习设计成个人训练操作系统，用“今日任务”和能力模块替代传统首页卡片。
+- [practice-ui-orbit.html](practice-ui-orbit.html)：能力星轨，把技能之间的前置关系和成长路径可视化。
+- [practice-ui-stage.html](practice-ui-stage.html)：舞台排练模式，把每次练习包装成一场演出前的场景排练。
 
 当前 Android UI 已在根目录 `app` 模块落地。使用 JDK 17 与已安装的 Android SDK，可执行：
 

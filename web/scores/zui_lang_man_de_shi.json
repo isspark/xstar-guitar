@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "source": {
+    "id": "zui-lang-man-de-shi",
+    "title": "最浪漫的事",
+    "subtitle": "演唱：赵咏华",
+    "license": "项目内置验证资源；正式发布前需要补充可追溯授权记录"
+  },
+  "alphaTabSource": {
+    "type": "alphatex",
+    "path": "../docs/vendor/songs/zui_lang_man_de_shi.alphaTex.js",
+    "global": "latestAlphaTex",
+    "lyricsMode": "custom-only",
+    "chordDiagramsMode": "custom-only"
+  },
+  "meter": { "numerator": 4, "denominator": 4 },
+  "defaultTempo": 72,
+  "chordDiagrams": {
+    "C": { "frets": ["x", 3, 2, 0, 1, 0], "baseFret": 1 },
+    "Am": { "frets": ["x", 0, 2, 2, 1, 0], "baseFret": 1 },
+    "Dm": { "frets": ["x", "x", 0, 2, 3, 1], "baseFret": 1 },
+    "G": { "frets": [3, 2, 0, 0, 0, 3], "baseFret": 1 },
+    "Gadd11": { "frets": [3, 2, 0, 0, 1, 3], "baseFret": 1 }
+  },
+  "chords": {
+    "0": "C", "2": "Am", "4": "Dm", "5": "G", "6": "G", "7": "C",
+    "8": "Am", "9": "Dm", "10": "G", "11": "C", "12": "Am", "13": "Dm",
+    "14": "G", "15": "G", "16": "Gadd11", "17": "C", "18": "Am", "19": "Dm",
+    "20": "G", "21": "C", "22": "C", "23": "C", "24": "C", "25": "C", "26": "C"
+  },
+  "jianpu": {
+    "tracks": [
+      {
+        "id": "lead",
+        "events": [
+          { "measure": 0, "values": ["6", "6", "5", "5", "5", "5"], "lyrics": ["到", "最", "浪", "漫", "的", "事"] },
+          { "measure": 1, "values": ["6", "6", "5", "5", "5", "5"] },
+          { "measure": 2, "values": ["0", "5", "6", "1", "6", "6"], "lyrics": ["就", "是", "和", "你", "一", "起"] },
+          { "measure": 3, "values": ["6", "5", "6", "5", "5", "6"], "lyrics": ["慢", "慢", "变", "老"] },
+          { "measure": 4, "values": ["2", "2", "2", "1", "2", "1"], "lyrics": ["一", "路", "上"] },
+          { "measure": 5, "values": ["6", "6", "5", "5", "5", "5"], "lyrics": ["收", "藏", "点", "点", "滴", "滴"] },
+          { "measure": 6, "values": ["6", "6", "5", "5", "5", "5"], "lyrics": ["的", "欢", "笑"] },
+          { "measure": 7, "values": ["6", "6", "5", "5", "5", "5"], "lyrics": ["留", "到", "以", "后", "坐", "着"] },
+          { "measure": 8, "values": ["0", "5", "6", "1", "6", "6"], "lyrics": ["摇", "椅", "慢", "慢", "聊"] },
+          { "measure": 9, "values": ["2", "2", "2", "1", "2", "1"], "lyrics": ["我", "能", "想", "到"] },
+          { "measure": 10, "values": ["6", "6", "5", "5", "5", "5"], "lyrics": ["最", "浪", "漫", "的", "事"] },
+          { "measure": 11, "values": ["6", "6", "5", "5", "5", "5"], "lyrics": ["就", "是", "和", "你", "一", "起"] },
+          { "measure": 12, "values": ["6", "5", "6", "5", "5", "6"], "lyrics": ["慢", "慢", "变", "老"] },
+          { "measure": 13, "values": ["2", "2", "2", "1", "2", "1"], "lyrics": ["直", "到", "我", "们"] },
+          { "measure": 14, "values": ["6", "6", "5", "5", "5", "5"], "lyrics": ["老", "的", "哪", "儿", "也", "去"] },
+          { "measure": 15, "values": ["6", "6", "5", "5", "5", "5"], "lyrics": ["了", "你", "还", "依", "然", "把"] },
+          { "measure": 16, "values": ["6", "6", "5", "5", "5", "5"], "lyrics": ["我", "当", "成", "手", "心", "里"] },
+          { "measure": 17, "values": ["6", "6", "5", "5", "5", "5"], "lyrics": ["的", "宝"] },
+          { "measure": 18, "values": ["6", "6", "5", "5", "5", "5"], "lyrics": ["到", "最", "浪", "漫", "的", "事"] },
+          { "measure": 19, "values": ["0", "5", "6", "1", "6", "6"], "lyrics": ["就", "是", "和", "你", "一", "起"] },
+          { "measure": 20, "values": ["6", "5", "6", "5", "5", "6"], "lyrics": ["慢", "慢", "变", "老"] },
+          { "measure": 21, "values": ["6", "6", "5", "5", "5", "5"], "lyrics": ["我", "能", "想", "到", "最", "浪"] },
+          { "measure": 22, "values": ["6", "6", "5", "5", "5", "5"], "lyrics": ["漫", "的", "事"] },
+          { "measure": 23, "values": ["6", "6", "5", "5", "5", "5"] },
+          { "measure": 24, "values": ["6", "6", "5", "5", "5", "5"] },
+          { "measure": 25, "values": ["6", "6", "5", "5", "5", "5"] },
+          { "measure": 26, "values": ["2", "3", "2", "1"] }
+        ]
+      }
+    ]
+  },
+  "style": {
+    "showTab": true,
+    "showRhythm": true,
+    "showJianpu": true,
+    "showLyrics": true,
+    "lyricLineCount": 1,
+    "showChordName": true,
+    "showChordDiagram": true
+  }
+}

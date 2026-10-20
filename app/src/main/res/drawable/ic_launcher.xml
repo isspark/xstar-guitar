@@ -5,12 +5,23 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
     <path
-        android:fillColor="#121621"
+        android:fillColor="#171111"
         android:pathData="M22,10 L86,10 A12,12 0,0 1,98 22 L98,86 A12,12 0,0 1,86 98 L22,98 A12,12 0,0 1,10 86 L10,22 A12,12 0,0 1,22 10 Z" />
-    <path
-        android:fillColor="#886CFF"
-        android:pathData="M28,30 L38,30 L50,50 L62,30 L72,30 L55,58 L55,78 L45,78 L45,58 Z" />
-    <path
-        android:fillColor="#54D7C4"
-        android:pathData="M66,52 L78,52 L78,64 L66,64 Z" />
+    <group
+        android:scaleX="0.82"
+        android:scaleY="0.82"
+        android:pivotX="54"
+        android:pivotY="54">
+        <!-- Headstock and tuning pegs. -->
+        <path android:fillColor="#FFD2AF" android:pathData="M49,21 Q54,18 59,21 L59,34 L49,34 Z" />
+        <path android:fillColor="#FFA877" android:pathData="M45,23 L49,23 L49,26 L45,26 Z M59,23 L63,23 L63,26 L59,26 Z M45,29 L49,29 L49,32 L45,32 Z M59,29 L63,29 L63,32 L59,32 Z" />
+        <!-- Neck and acoustic body silhouette. -->
+        <path android:fillColor="#BC7650" android:pathData="M50,33 L58,33 L58,58 L50,58 Z" />
+        <path android:fillColor="#FFA877" android:pathData="M48,48 C39,45 33,50 34,57 C35,61 40,63 37,67 C27,78 36,89 54,89 C72,89 81,78 71,67 C68,63 73,61 74,57 C75,50 69,45 60,48 L58,55 L50,55 Z" />
+        <path android:fillColor="#171111" android:pathData="M54,60 A6,6 0,1 0,54 72 A6,6 0,1 0,54 60" />
+        <path android:fillColor="#6B3D2D" android:pathData="M44,78 L64,78 L64,82 L44,82 Z" />
+        <!-- Fine strings and fret details. -->
+        <path android:fillColor="#00000000" android:strokeColor="#FFE5CE" android:strokeWidth="0.6" android:strokeAlpha="0.75"
+            android:pathData="M52,28 L52,80 M54,28 L54,80 M56,28 L56,80 M50,38 L58,38 M50,43 L58,43 M50,48 L58,48" />
+    </group>
 </vector>

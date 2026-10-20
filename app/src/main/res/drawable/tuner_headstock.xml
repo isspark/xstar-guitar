@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Original XStar illustration. Transparent background; no third-party assets. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt" android:width="320dp" android:height="340dp" android:viewportWidth="320" android:viewportHeight="340">
+    <path android:pathData="M119,340 L113,285 L87,52 Q83,28 107,20 Q130,9 160,22 Q190,9 213,20 Q237,28 233,52 L207,285 L201,340 Z" android:strokeColor="#8C7156" android:strokeWidth="1.2">
+        <aapt:attr name="android:fillColor"><gradient android:startX="87" android:startY="0" android:endX="233" android:endY="0" android:type="linear"><item android:offset="0" android:color="#251B17"/><item android:offset="0.3" android:color="#46342A"/><item android:offset="0.52" android:color="#594032"/><item android:offset="0.8" android:color="#382820"/><item android:offset="1" android:color="#201916"/></gradient></aapt:attr>
+    </path>
+    <path android:pathData="M98,54 Q125,27 160,37 Q195,27 222,54 L200,282 L120,282 Z" android:fillColor="#10DCC3A2"/>
+    <path android:pathData="M119,65 Q113,143 137,291 M132,51 Q129,152 148,298 M155,45 Q147,137 158,303 M172,48 Q182,168 174,295 M191,51 Q206,139 183,299 M209,62 Q214,142 194,283" android:fillColor="@android:color/transparent" android:strokeColor="#246F513C" android:strokeWidth="1"/>
+    <path android:pathData="M115,307 L205,307 L205,318 L115,318 Z" android:fillColor="#DACDB5"/>
+    <path android:pathData="M115,308 L205,308" android:strokeColor="#FFF0D5" android:strokeWidth="1"/>
+    <path android:pathData="M115,319 L205,319" android:strokeColor="#171311" android:strokeWidth="2"/>
+</vector>

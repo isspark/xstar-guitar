@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "source": {
+    "id": "wei-ni-liu-yi-zhan-deng-original",
+    "title": "为你留一盏灯",
+    "subtitle": "原创抒情歌曲 · C大调 · 演唱旋律与木吉他伴奏",
+    "composer": "AI原创",
+    "lyricist": "AI原创",
+    "arrangementCredit": "AI原创木吉他编配",
+    "transcriptionNotes": "本曲为本次创作的28小节抒情短歌，约93秒。C大调，4/4，四分音符=72，无变调夹。结构：4小节前奏、8小节主歌、4小节预副歌、8小节副歌、4小节尾奏。第一轨是独立演唱旋律，以吉他音色供排练并提供旋律六线谱；第二轨为实际弹唱分解和弦伴奏。两轨由不同演奏者或人声与吉他分别演奏，不是单把吉他的指弹谱。数字简谱1=C4，高音点对应C5及以上；每个字对齐独立音符。主歌轻声叙述，预副歌渐强，副歌舒展，尾奏渐弱。歌词与简谱、tab共用小节内tick，960 ticks为一拍。"
+  },
+  "meter": {"numerator": 4, "denominator": 4},
+  "defaultTempo": 72,
+  "capo": 0,
+  "tuning": [64, 59, 55, 50, 45, 40],
+  "key": {"shape": "C", "concert": "C"},
+  "composition": {
+    "theme": "远行与归来：把守候唱成一盏灯",
+    "vocalRange": {"lowest": "B3", "highest": "E5"},
+    "sections": [
+      {"name": "前奏", "firstMeasure": 1, "lastMeasure": 4},
+      {"name": "主歌", "firstMeasure": 5, "lastMeasure": 12},
+      {"name": "预副歌", "firstMeasure": 13, "lastMeasure": 16},
+      {"name": "副歌", "firstMeasure": 17, "lastMeasure": 24},
+      {"name": "尾奏", "firstMeasure": 25, "lastMeasure": 28}
+    ],
+    "lyrics": {
+      "主歌": ["晚风经过长街，吹散一天疲倦。", "你把沉默折好，藏进我的掌间。", "窗外最后班车，驶向远方的夜。", "我将你的名字，轻轻写进明天。"],
+      "预副歌": ["若是世界太远，别怕脚步太慢。", "还有一盏灯火，等你穿过风寒。"],
+      "副歌": ["我为你留盏灯，照亮回家的门。", "任凭岁月多深，你仍是心上人。", "把未说完的话，唱给漫天星辰。", "等到天色微明，与你相拥一生。"]
+    }
+  },
+  "chordDiagrams": {
+    "C": {"frets": ["x", 3, 2, 0, 1, 0], "baseFret": 1},
+    "G/B": {"frets": ["x", 2, 0, 0, 3, 3], "baseFret": 1},
+    "Am7": {"frets": ["x", 0, 2, 0, 1, 0], "baseFret": 1},
+    "Fmaj7": {"frets": ["x", "x", 3, 2, 1, 0], "baseFret": 1},
+    "Dm7": {"frets": ["x", "x", 0, 2, 1, 1], "baseFret": 1},
+    "Em7": {"frets": [0, 2, 0, 0, 0, 0], "baseFret": 1},
+    "Gsus4": {"frets": [3, "x", 0, 0, 1, 3], "baseFret": 1},
+    "G": {"frets": [3, 2, 0, 0, 0, 3], "baseFret": 1}
+  },
+  "transcription": {
+    "ticksPerQuarter": 960,
+    "voicings": {},
+    "review": [],
+    "bars": [
+      {"number": 1, "section": "前奏", "chords": [{"tick": 0, "name": "C"}], "tab": "r.1"},
+      {"number": 2, "chords": [{"tick": 0, "name": "G/B"}], "tab": "r.1"},
+      {"number": 3, "chords": [{"tick": 0, "name": "Am7"}], "tab": "r.1"},
+      {"number": 4, "chords": [{"tick": 0, "name": "G"}], "tab": "r.1"},
+      {"number": 5, "section": "主歌", "chords": [{"tick": 0, "name": "C"}], "tab": "0.1.8 3.1.8 3.1.4 0.1.8 3.2.8 1.2.4", "lyricText": "晚风经过长街"},
+      {"number": 6, "chords": [{"tick": 0, "name": "G/B"}], "tab": "3.2.8 0.1.8 3.1.4 3.2.8 0.2.8 3.2.4", "lyricText": "吹散一天疲倦"},
+      {"number": 7, "chords": [{"tick": 0, "name": "Am7"}], "tab": "0.1.8 3.1.8 5.1.4 3.1.8 0.1.8 0.1.4", "lyricText": "你把沉默折好"},
+      {"number": 8, "chords": [{"tick": 0, "name": "Fmaj7"}], "tab": "1.1.8 0.1.8 3.2.4 1.2.8 3.2.8 0.1.4", "lyricText": "藏进我的掌间"},
+      {"number": 9, "chords": [{"tick": 0, "name": "C"}], "tab": "0.1.8 3.1.8 3.1.4 5.1.8 3.1.8 0.1.4", "lyricText": "窗外最后班车"},
+      {"number": 10, "chords": [{"tick": 0, "name": "Em7"}], "tab": "3.1.8 7.1.8 5.1.4 3.1.8 0.1.8 0.1.4", "lyricText": "驶向远方的夜"},
+      {"number": 11, "chords": [{"tick": 0, "name": "Dm7"}], "tab": "1.1.8 5.1.8 3.1.4 1.1.8 0.1.8 3.2.4", "lyricText": "我将你的名字"},
+      {"number": 12, "chords": [{"tick": 0, "name": "G"}], "tab": "3.2.8 0.1.8 3.1.4 5.1.8 7.1.8 3.1.4", "lyricText": "轻轻写进明天"},
+      {"number": 13, "section": "预副歌", "chords": [{"tick": 0, "name": "Fmaj7"}], "tab": "5.1.8 5.1.8 8.1.4 7.1.8 5.1.8 3.1.4", "lyricText": "若是世界太远"},
+      {"number": 14, "chords": [{"tick": 0, "name": "Em7"}], "tab": "3.1.8 7.1.8 10.1.4 8.1.8 7.1.8 3.1.4", "lyricText": "别怕脚步太慢"},
+      {"number": 15, "chords": [{"tick": 0, "name": "Dm7"}], "tab": "5.1.8 5.1.8 8.1.4 10.1.8 8.1.8 5.1.4", "lyricText": "还有一盏灯火"},
+      {"number": 16, "chords": [{"tick": 0, "name": "Gsus4"}, {"tick": 1920, "name": "G"}], "tab": "3.1.8 5.1.8 8.1.4 7.1.8 5.1.8 7.1.4", "lyricText": "等你穿过风寒"},
+      {"number": 17, "section": "副歌", "chords": [{"tick": 0, "name": "C"}], "tab": "8.1.8 8.1.8 12.1.4 10.1.8 8.1.8 3.1.4", "lyricText": "我为你留盏灯"},
+      {"number": 18, "chords": [{"tick": 0, "name": "G/B"}], "tab": "7.1.8 7.1.8 10.1.4 8.1.8 7.1.8 3.1.4", "lyricText": "照亮回家的门"},
+      {"number": 19, "chords": [{"tick": 0, "name": "Am7"}], "tab": "5.1.8 8.1.8 12.1.4 10.1.8 8.1.8 5.1.4", "lyricText": "任凭岁月多深"},
+      {"number": 20, "chords": [{"tick": 0, "name": "Em7"}], "tab": "3.1.8 7.1.8 10.1.4 8.1.8 7.1.8 3.1.4", "lyricText": "你仍是心上人"},
+      {"number": 21, "chords": [{"tick": 0, "name": "Fmaj7"}], "tab": "5.1.8 8.1.8 8.1.4 7.1.8 5.1.8 1.1.4", "lyricText": "把未说完的话"},
+      {"number": 22, "chords": [{"tick": 0, "name": "C"}], "tab": "0.1.8 3.1.8 8.1.4 10.1.8 12.1.8 8.1.4", "lyricText": "唱给漫天星辰"},
+      {"number": 23, "chords": [{"tick": 0, "name": "Dm7"}, {"tick": 1920, "name": "G"}], "tab": "5.1.8 8.1.8 10.1.4 7.1.8 5.1.8 3.1.4", "lyricText": "等到天色微明"},
+      {"number": 24, "chords": [{"tick": 0, "name": "C"}], "tab": "0.1.8 3.1.8 8.1.4 3.1.8 3.2.8 1.2.4", "lyricText": "与你相拥一生"},
+      {"number": 25, "section": "尾奏", "chords": [{"tick": 0, "name": "Fmaj7"}], "tab": "r.1"},
+      {"number": 26, "chords": [{"tick": 0, "name": "C"}], "tab": "r.1"},
+      {"number": 27, "chords": [{"tick": 0, "name": "Gsus4"}, {"tick": 1920, "name": "G"}], "tab": "r.1"},
+      {"number": 28, "chords": [{"tick": 0, "name": "C"}], "tab": "r.1"}
+    ]
+  },
+  "alphaTabSource": {
+    "type": "alphatex",
+    "chordDiagramsMode": "custom-only",
+    "lyricsMode": "custom-only",
+    "text": "\\title \"为你留一盏灯\"\n\\subtitle \"原创抒情歌曲 · C大调 · 72 BPM\"\n\\tempo 72\n\\track \"演唱旋律（排练音色）\" {instrument 24}\n\\staff {tabs}\n\\tuning (E4 B3 G3 D3 A2 E2)\n\\ts (4 4)\n\\section \"前奏\"\nr.1 | r.1 | r.1 | r.1 |\n\\section \"主歌\"\n0.1.8 3.1.8 3.1.4 0.1.8 3.2.8 1.2.4 |\n3.2.8 0.1.8 3.1.4 3.2.8 0.2.8 3.2.4 |\n0.1.8 3.1.8 5.1.4 3.1.8 0.1.8 0.1.4 |\n1.1.8 0.1.8 3.2.4 1.2.8 3.2.8 0.1.4 |\n0.1.8 3.1.8 3.1.4 5.1.8 3.1.8 0.1.4 |\n3.1.8 7.1.8 5.1.4 3.1.8 0.1.8 0.1.4 |\n1.1.8 5.1.8 3.1.4 1.1.8 0.1.8 3.2.4 |\n3.2.8 0.1.8 3.1.4 5.1.8 7.1.8 3.1.4 |\n\\section \"预副歌\"\n5.1.8 5.1.8 8.1.4 7.1.8 5.1.8 3.1.4 |\n3.1.8 7.1.8 10.1.4 8.1.8 7.1.8 3.1.4 |\n5.1.8 5.1.8 8.1.4 10.1.8 8.1.8 5.1.4 |\n3.1.8 5.1.8 8.1.4 7.1.8 5.1.8 7.1.4 |\n\\section \"副歌\"\n8.1.8 8.1.8 12.1.4 10.1.8 8.1.8 3.1.4 |\n7.1.8 7.1.8 10.1.4 8.1.8 7.1.8 3.1.4 |\n5.1.8 8.1.8 12.1.4 10.1.8 8.1.8 5.1.4 |\n3.1.8 7.1.8 10.1.4 8.1.8 7.1.8 3.1.4 |\n5.1.8 8.1.8 8.1.4 7.1.8 5.1.8 1.1.4 |\n0.1.8 3.1.8 8.1.4 10.1.8 12.1.8 8.1.4 |\n5.1.8 8.1.8 10.1.4 7.1.8 5.1.8 3.1.4 |\n0.1.8 3.1.8 8.1.4 3.1.8 3.2.8 1.2.4 |\n\\section \"尾奏\"\nr.1 | r.1 | r.1 | r.1\n\\track \"木吉他伴奏\" {instrument 25}\n\\staff {tabs}\n\\tuning (E4 B3 G3 D3 A2 E2)\n\\ts (4 4)\n:8 3.5 2.4 0.3 1.2 0.1 1.2 0.3 2.4 |\n:8 2.5 0.4 0.3 3.2 3.1 3.2 0.3 0.4 |\n:8 0.5 2.4 0.3 1.2 0.1 1.2 0.3 2.4 |\n:8 3.6 0.4 0.3 0.2 3.1 0.2 0.3 0.4 |\n:8 3.5 2.4 0.3 1.2 0.1 1.2 0.3 2.4 |\n:8 2.5 0.4 0.3 3.2 3.1 3.2 0.3 0.4 |\n:8 0.5 2.4 0.3 1.2 0.1 1.2 0.3 2.4 |\n:8 3.4 2.3 1.2 0.1 1.2 2.3 3.4 2.3 |\n:8 3.5 2.4 0.3 1.2 0.1 1.2 0.3 2.4 |\n:8 0.6 0.4 0.3 0.2 0.1 0.2 0.3 0.4 |\n:8 0.4 2.3 1.2 1.1 1.2 2.3 0.4 2.3 |\n:8 3.6 0.4 0.3 0.2 3.1 0.2 0.3 0.4 |\n:8 3.4 2.3 1.2 0.1 1.2 2.3 3.4 2.3 |\n:8 0.6 0.4 0.3 0.2 0.1 0.2 0.3 0.4 |\n:8 0.4 2.3 1.2 1.1 1.2 2.3 0.4 2.3 |\n:8 3.6 0.4 0.3 1.2 3.6 0.4 0.3 0.2 |\n:8 3.5 2.4 0.3 1.2 0.1 1.2 0.3 2.4 |\n:8 2.5 0.4 0.3 3.2 3.1 3.2 0.3 0.4 |\n:8 0.5 2.4 0.3 1.2 0.1 1.2 0.3 2.4 |\n:8 0.6 0.4 0.3 0.2 0.1 0.2 0.3 0.4 |\n:8 3.4 2.3 1.2 0.1 1.2 2.3 3.4 2.3 |\n:8 3.5 2.4 0.3 1.2 0.1 1.2 0.3 2.4 |\n:8 0.4 2.3 1.2 1.1 3.6 0.4 0.3 0.2 |\n:8 3.5 2.4 0.3 1.2 0.1 1.2 0.3 2.4 |\n:8 3.4 2.3 1.2 0.1 1.2 2.3 3.4 2.3 |\n:8 3.5 2.4 0.3 1.2 0.1 1.2 0.3 2.4 |\n:8 3.6 0.4 0.3 1.2 3.6 0.4 0.3 0.2 |\n(3.5 2.4 0.3 1.2 0.1).1{ad}"
+  },
+  "jianpu": {"tracks": [{"id": "vocal", "name": "演唱旋律 · 1=C", "alignByTick": true, "events": [
+    {"measureIndex": 4, "events": [
+      {"tick": 0, "value": "3", "durationTicks": 480, "lyric": "晚"}, {"tick": 480, "value": "5", "durationTicks": 480, "lyric": "风"}, {"tick": 960, "value": "5", "durationTicks": 960, "lyric": "经"}, {"tick": 1920, "value": "3", "durationTicks": 480, "lyric": "过"}, {"tick": 2400, "value": "2", "durationTicks": 480, "lyric": "长"}, {"tick": 2880, "value": "1", "durationTicks": 960, "lyric": "街"}
+    ]},
+    {"measureIndex": 5, "events": [
+      {"tick": 0, "value": "2", "durationTicks": 480, "lyric": "吹"}, {"tick": 480, "value": "3", "durationTicks": 480, "lyric": "散"}, {"tick": 960, "value": "5", "durationTicks": 960, "lyric": "一"}, {"tick": 1920, "value": "2", "durationTicks": 480, "lyric": "天"}, {"tick": 2400, "value": "7", "octaveOffset": -1, "durationTicks": 480, "lyric": "疲"}, {"tick": 2880, "value": "2", "durationTicks": 960, "lyric": "倦"}
+    ]},
+    {"measureIndex": 6, "events": [
+      {"tick": 0, "value": "3", "durationTicks": 480, "lyric": "你"}, {"tick": 480, "value": "5", "durationTicks": 480, "lyric": "把"}, {"tick": 960, "value": "6", "durationTicks": 960, "lyric": "沉"}, {"tick": 1920, "value": "5", "durationTicks": 480, "lyric": "默"}, {"tick": 2400, "value": "3", "durationTicks": 480, "lyric": "折"}, {"tick": 2880, "value": "3", "durationTicks": 960, "lyric": "好"}
+    ]},
+    {"measureIndex": 7, "events": [
+      {"tick": 0, "value": "4", "durationTicks": 480, "lyric": "藏"}, {"tick": 480, "value": "3", "durationTicks": 480, "lyric": "进"}, {"tick": 960, "value": "2", "durationTicks": 960, "lyric": "我"}, {"tick": 1920, "value": "1", "durationTicks": 480, "lyric": "的"}, {"tick": 2400, "value": "2", "durationTicks": 480, "lyric": "掌"}, {"tick": 2880, "value": "3", "durationTicks": 960, "lyric": "间"}
+    ]},
+    {"measureIndex": 8, "events": [
+      {"tick": 0, "value": "3", "durationTicks": 480, "lyric": "窗"}, {"tick": 480, "value": "5", "durationTicks": 480, "lyric": "外"}, {"tick": 960, "value": "5", "durationTicks": 960, "lyric": "最"}, {"tick": 1920, "value": "6", "durationTicks": 480, "lyric": "后"}, {"tick": 2400, "value": "5", "durationTicks": 480, "lyric": "班"}, {"tick": 2880, "value": "3", "durationTicks": 960, "lyric": "车"}
+    ]},
+    {"measureIndex": 9, "events": [
+      {"tick": 0, "value": "5", "durationTicks": 480, "lyric": "驶"}, {"tick": 480, "value": "7", "durationTicks": 480, "lyric": "向"}, {"tick": 960, "value": "6", "durationTicks": 960, "lyric": "远"}, {"tick": 1920, "value": "5", "durationTicks": 480, "lyric": "方"}, {"tick": 2400, "value": "3", "durationTicks": 480, "lyric": "的"}, {"tick": 2880, "value": "3", "durationTicks": 960, "lyric": "夜"}
+    ]},
+    {"measureIndex": 10, "events": [
+      {"tick": 0, "value": "4", "durationTicks": 480, "lyric": "我"}, {"tick": 480, "value": "6", "durationTicks": 480, "lyric": "将"}, {"tick": 960, "value": "5", "durationTicks": 960, "lyric": "你"}, {"tick": 1920, "value": "4", "durationTicks": 480, "lyric": "的"}, {"tick": 2400, "value": "3", "durationTicks": 480, "lyric": "名"}, {"tick": 2880, "value": "2", "durationTicks": 960, "lyric": "字"}
+    ]},
+    {"measureIndex": 11, "events": [
+      {"tick": 0, "value": "2", "durationTicks": 480, "lyric": "轻"}, {"tick": 480, "value": "3", "durationTicks": 480, "lyric": "轻"}, {"tick": 960, "value": "5", "durationTicks": 960, "lyric": "写"}, {"tick": 1920, "value": "6", "durationTicks": 480, "lyric": "进"}, {"tick": 2400, "value": "7", "durationTicks": 480, "lyric": "明"}, {"tick": 2880, "value": "5", "durationTicks": 960, "lyric": "天"}
+    ]},
+    {"measureIndex": 12, "events": [
+      {"tick": 0, "value": "6", "durationTicks": 480, "lyric": "若"}, {"tick": 480, "value": "6", "durationTicks": 480, "lyric": "是"}, {"tick": 960, "value": "1", "octaveOffset": 1, "durationTicks": 960, "lyric": "世"}, {"tick": 1920, "value": "7", "durationTicks": 480, "lyric": "界"}, {"tick": 2400, "value": "6", "durationTicks": 480, "lyric": "太"}, {"tick": 2880, "value": "5", "durationTicks": 960, "lyric": "远"}
+    ]},
+    {"measureIndex": 13, "events": [
+      {"tick": 0, "value": "5", "durationTicks": 480, "lyric": "别"}, {"tick": 480, "value": "7", "durationTicks": 480, "lyric": "怕"}, {"tick": 960, "value": "2", "octaveOffset": 1, "durationTicks": 960, "lyric": "脚"}, {"tick": 1920, "value": "1", "octaveOffset": 1, "durationTicks": 480, "lyric": "步"}, {"tick": 2400, "value": "7", "durationTicks": 480, "lyric": "太"}, {"tick": 2880, "value": "5", "durationTicks": 960, "lyric": "慢"}
+    ]},
+    {"measureIndex": 14, "events": [
+      {"tick": 0, "value": "6", "durationTicks": 480, "lyric": "还"}, {"tick": 480, "value": "6", "durationTicks": 480, "lyric": "有"}, {"tick": 960, "value": "1", "octaveOffset": 1, "durationTicks": 960, "lyric": "一"}, {"tick": 1920, "value": "2", "octaveOffset": 1, "durationTicks": 480, "lyric": "盏"}, {"tick": 2400, "value": "1", "octaveOffset": 1, "durationTicks": 480, "lyric": "灯"}, {"tick": 2880, "value": "6", "durationTicks": 960, "lyric": "火"}
+    ]},
+    {"measureIndex": 15, "events": [
+      {"tick": 0, "value": "5", "durationTicks": 480, "lyric": "等"}, {"tick": 480, "value": "6", "durationTicks": 480, "lyric": "你"}, {"tick": 960, "value": "1", "octaveOffset": 1, "durationTicks": 960, "lyric": "穿"}, {"tick": 1920, "value": "7", "durationTicks": 480, "lyric": "过"}, {"tick": 2400, "value": "6", "durationTicks": 480, "lyric": "风"}, {"tick": 2880, "value": "7", "durationTicks": 960, "lyric": "寒"}
+    ]},
+    {"measureIndex": 16, "events": [
+      {"tick": 0, "value": "1", "octaveOffset": 1, "durationTicks": 480, "lyric": "我"}, {"tick": 480, "value": "1", "octaveOffset": 1, "durationTicks": 480, "lyric": "为"}, {"tick": 960, "value": "3", "octaveOffset": 1, "durationTicks": 960, "lyric": "你"}, {"tick": 1920, "value": "2", "octaveOffset": 1, "durationTicks": 480, "lyric": "留"}, {"tick": 2400, "value": "1", "octaveOffset": 1, "durationTicks": 480, "lyric": "盏"}, {"tick": 2880, "value": "5", "durationTicks": 960, "lyric": "灯"}
+    ]},
+    {"measureIndex": 17, "events": [
+      {"tick": 0, "value": "7", "durationTicks": 480, "lyric": "照"}, {"tick": 480, "value": "7", "durationTicks": 480, "lyric": "亮"}, {"tick": 960, "value": "2", "octaveOffset": 1, "durationTicks": 960, "lyric": "回"}, {"tick": 1920, "value": "1", "octaveOffset": 1, "durationTicks": 480, "lyric": "家"}, {"tick": 2400, "value": "7", "durationTicks": 480, "lyric": "的"}, {"tick": 2880, "value": "5", "durationTicks": 960, "lyric": "门"}
+    ]},
+    {"measureIndex": 18, "events": [
+      {"tick": 0, "value": "6", "durationTicks": 480, "lyric": "任"}, {"tick": 480, "value": "1", "octaveOffset": 1, "durationTicks": 480, "lyric": "凭"}, {"tick": 960, "value": "3", "octaveOffset": 1, "durationTicks": 960, "lyric": "岁"}, {"tick": 1920, "value": "2", "octaveOffset": 1, "durationTicks": 480, "lyric": "月"}, {"tick": 2400, "value": "1", "octaveOffset": 1, "durationTicks": 480, "lyric": "多"}, {"tick": 2880, "value": "6", "durationTicks": 960, "lyric": "深"}
+    ]},
+    {"measureIndex": 19, "events": [
+      {"tick": 0, "value": "5", "durationTicks": 480, "lyric": "你"}, {"tick": 480, "value": "7", "durationTicks": 480, "lyric": "仍"}, {"tick": 960, "value": "2", "octaveOffset": 1, "durationTicks": 960, "lyric": "是"}, {"tick": 1920, "value": "1", "octaveOffset": 1, "durationTicks": 480, "lyric": "心"}, {"tick": 2400, "value": "7", "durationTicks": 480, "lyric": "上"}, {"tick": 2880, "value": "5", "durationTicks": 960, "lyric": "人"}
+    ]},
+    {"measureIndex": 20, "events": [
+      {"tick": 0, "value": "6", "durationTicks": 480, "lyric": "把"}, {"tick": 480, "value": "1", "octaveOffset": 1, "durationTicks": 480, "lyric": "未"}, {"tick": 960, "value": "1", "octaveOffset": 1, "durationTicks": 960, "lyric": "说"}, {"tick": 1920, "value": "7", "durationTicks": 480, "lyric": "完"}, {"tick": 2400, "value": "6", "durationTicks": 480, "lyric": "的"}, {"tick": 2880, "value": "4", "durationTicks": 960, "lyric": "话"}
+    ]},
+    {"measureIndex": 21, "events": [
+      {"tick": 0, "value": "3", "durationTicks": 480, "lyric": "唱"}, {"tick": 480, "value": "5", "durationTicks": 480, "lyric": "给"}, {"tick": 960, "value": "1", "octaveOffset": 1, "durationTicks": 960, "lyric": "漫"}, {"tick": 1920, "value": "2", "octaveOffset": 1, "durationTicks": 480, "lyric": "天"}, {"tick": 2400, "value": "3", "octaveOffset": 1, "durationTicks": 480, "lyric": "星"}, {"tick": 2880, "value": "1", "octaveOffset": 1, "durationTicks": 960, "lyric": "辰"}
+    ]},
+    {"measureIndex": 22, "events": [
+      {"tick": 0, "value": "6", "durationTicks": 480, "lyric": "等"}, {"tick": 480, "value": "1", "octaveOffset": 1, "durationTicks": 480, "lyric": "到"}, {"tick": 960, "value": "2", "octaveOffset": 1, "durationTicks": 960, "lyric": "天"}, {"tick": 1920, "value": "7", "durationTicks": 480, "lyric": "色"}, {"tick": 2400, "value": "6", "durationTicks": 480, "lyric": "微"}, {"tick": 2880, "value": "5", "durationTicks": 960, "lyric": "明"}
+    ]},
+    {"measureIndex": 23, "events": [
+      {"tick": 0, "value": "3", "durationTicks": 480, "lyric": "与"}, {"tick": 480, "value": "5", "durationTicks": 480, "lyric": "你"}, {"tick": 960, "value": "1", "octaveOffset": 1, "durationTicks": 960, "lyric": "相"}, {"tick": 1920, "value": "5", "durationTicks": 480, "lyric": "拥"}, {"tick": 2400, "value": "2", "durationTicks": 480, "lyric": "一"}, {"tick": 2880, "value": "1", "durationTicks": 960, "lyric": "生"}
+    ]}
+  ]}]},
+  "style": {"showTab": true, "showRhythm": true, "showJianpu": true, "showLyrics": true, "lyricLineCount": 1, "showChordName": true, "showChordDiagram": true}
+}

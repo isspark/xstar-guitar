@@ -1,0 +1,102 @@
+@font-face {
+  font-family: "Bravura";
+  src: url("../docs/vendor/alphatab/font/Bravura.woff2") format("woff2");
+  font-display: swap;
+}
+
+:root {
+  color-scheme: dark;
+  --bg: #101211;
+  --bg-glow: #252d20;
+  --surface: #1b1f1b;
+  --surface-raised: #242d1b;
+  --ink: #f0f2e9;
+  --muted: #a0a899;
+  --line: #30382e;
+  --brand: #d3fc79;
+  --brand-strong: #d3fc79;
+  --brand-soft: rgba(211, 252, 121, .12);
+  --accent: #d3fc79;
+  --score-ink: #101211;
+  --score-paper: #f0f2e9;
+  --shadow: 0 24px 80px rgba(0, 0, 0, .28);
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  min-width: 320px;
+  color: var(--ink);
+  background: radial-gradient(circle at 15% 0, var(--bg-glow), transparent 32rem), var(--bg);
+  font-family: Inter, "Noto Sans SC", "Microsoft YaHei UI", sans-serif;
+}
+button, input { font: inherit; }
+button { cursor: pointer; color: inherit; }
+.app-shell { width: min(1440px, calc(100% - 36px)); margin: 0 auto; padding: 42px 0 60px; }
+.topbar { display: flex; justify-content: space-between; gap: 24px; align-items: flex-start; }
+.eyebrow, .section-kicker, .card-label { margin: 0; color: var(--brand-strong); font-size: 11px; font-weight: 800; letter-spacing: .16em; }
+h1, h2, p { margin-top: 0; }
+h1 { margin-bottom: 10px; font-size: clamp(28px, 4vw, 48px); letter-spacing: -.04em; }
+h2 { margin: 8px 0 0; font-size: 24px; }
+.subtitle { max-width: 650px; margin-bottom: 0; color: var(--muted); line-height: 1.7; }
+.status-stack { display: grid; justify-items: end; gap: 8px; color: var(--muted); font-size: 13px; }
+.status { border: 1px solid var(--line); border-radius: 999px; padding: 7px 11px; font-size: 12px; }
+.status-ready { color: var(--accent); background: rgba(75, 212, 194, .1); }
+.status-error { color: #ff9f9f; background: rgba(255, 98, 98, .1); }
+.toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 30px 0 18px; padding: 14px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); box-shadow: var(--shadow); }
+button { border: 1px solid var(--line); border-radius: 10px; padding: 9px 13px; background: var(--surface-raised); transition: .18s ease; }
+select { border: 1px solid var(--line); border-radius: 10px; padding: 9px 13px; background: var(--surface-raised); color: var(--ink); }
+button:hover { border-color: var(--brand); transform: translateY(-1px); }
+button.primary { border-color: transparent; background: var(--brand); color: white; font-weight: 750; }
+.tempo-control { display: flex; align-items: center; gap: 8px; margin-left: auto; color: var(--muted); font-size: 13px; }
+.tempo-control output { min-width: 28px; color: var(--ink); font-weight: 800; text-align: right; }
+.tempo-control input { accent-color: var(--brand); width: 130px; }
+.check-control { display: flex; gap: 6px; align-items: center; color: var(--muted); font-size: 13px; }
+.check-control input { accent-color: var(--brand); }
+.hidden-file-input { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 18px; }
+.info-card { display: grid; gap: 5px; padding: 17px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+.info-card strong { font-size: 17px; }
+.info-card span:last-child { color: var(--muted); font-size: 13px; }
+.score-card { overflow: hidden; border: 1px solid var(--line); border-radius: 22px; background: var(--surface); box-shadow: var(--shadow); }
+.score-card-header { display: flex; justify-content: space-between; align-items: center; padding: 22px 24px; border-bottom: 1px solid var(--line); }
+.render-status { color: var(--muted); font-size: 13px; }
+.transcription-notice { margin: 0; padding: 12px 24px; color: var(--muted); font-size: 13px; line-height: 1.7; border-bottom: 1px solid var(--line); }
+.score-scroll { overflow: auto; padding: 24px; background: var(--line); }
+.score-host { min-width: 720px; transform-origin: top left; transition: transform .2s ease; }
+.score-host > svg { display: block; width: 100%; height: auto; min-height: 560px; padding: 24px; background: var(--score-paper); box-shadow: 0 8px 24px rgba(15, 23, 42, .14); }
+.score-host svg text { user-select: none; }
+.empty-state { display: none; padding: 50px; color: var(--muted); text-align: center; }
+.empty-state.visible { display: block; }
+.implementation-note { margin: 16px 4px 0; color: var(--muted); font-size: 13px; line-height: 1.65; }
+
+/* alphaTab 与扩展层使用同一个 SVG 坐标系。 */
+.jianpu-extension { pointer-events: none; }
+.jianpu-note { fill: var(--score-ink); font-family: "Times New Roman", "Noto Serif SC", serif; font-size: 18px; font-weight: 650; text-anchor: middle; }
+.jianpu-note.active, .lyric-extension .active { fill: #789b32; font-weight: 850; }
+.jianpu-underline { stroke: var(--score-ink); stroke-width: 1.4; }
+.jianpu-octave { fill: var(--score-ink); }
+.chord-diagram-extension { pointer-events: none; }
+.chord-grid { stroke: var(--score-ink); stroke-width: 1; }
+.chord-nut { stroke: var(--score-ink); stroke-width: 2.5; }
+.chord-dot { fill: var(--score-ink); }
+.chord-marker { fill: var(--score-ink); font-family: "Times New Roman", serif; font-size: 11px; text-anchor: middle; }
+.chord-diagram-name { display: block; fill: var(--score-ink) !important; font-family: Arial, "Noto Sans SC", sans-serif; font-size: 16px; font-style: normal; font-weight: 800; opacity: 1; text-anchor: middle; }
+.lyric-extension { pointer-events: none; }
+.lyric-extension text { fill: #4f5b4b; font-family: "Noto Sans SC", "Microsoft YaHei UI", sans-serif; font-size: 13px; text-anchor: middle; }
+.lyric-syllable.active { fill: #789b32; font-weight: 850; }
+.playback-cursor { fill: rgba(120, 155, 50, .28); stroke: #789b32; stroke-width: 2; rx: 4; }
+.strum-tap-dot { pointer-events: none; paint-order: stroke; }
+.strum-tap-dot.active { fill: #789b32; stroke: #101211; stroke-width: 1.5; r: 5; }
+
+@media (max-width: 760px) {
+  .app-shell { width: min(100% - 20px, 680px); padding-top: 24px; }
+  .topbar { display: block; }
+  .status-stack { justify-items: start; margin-top: 16px; }
+  .toolbar { gap: 8px; }
+  .tempo-control { width: 100%; margin-left: 0; order: 5; }
+  .tempo-control input { flex: 1; }
+  .info-grid { grid-template-columns: 1fr; }
+  .score-card-header { padding: 18px; }
+  .score-scroll { padding: 12px; }
+}

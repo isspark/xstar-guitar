@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#101211">
+  <title>XSTAR · 节拍器</title>
+  <style>
+    :root{color-scheme:dark;--bg:#101211;--surface:#1b1f1b;--line:#30382e;--text:#f0f2e9;--muted:#a0a899;--lime:#d3fc79;--orange:#ffb779}
+    *{box-sizing:border-box}body{margin:0;background:#080a09;color:var(--text);font-family:Inter,"Segoe UI","Microsoft YaHei",sans-serif}button,input{font:inherit}button{color:inherit;cursor:pointer;border:0;background:none;touch-action:manipulation}button:focus-visible,input:focus-visible{outline:2px solid var(--lime);outline-offset:4px}svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}button:disabled{opacity:.4;cursor:default}
+    .app{max-width:440px;margin:auto;min-height:100dvh;background:radial-gradient(ellipse at 50% 30%,#d3fc7907,transparent 48%),var(--bg);padding:env(safe-area-inset-top,0px) 24px max(18px,env(safe-area-inset-bottom,0px));display:flex;flex-direction:column}
+    header{height:78px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}.brand{font-size:20px;font-weight:850;letter-spacing:-.9px}.brand b{color:var(--lime)}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:2px;font-weight:400;margin-top:5px}.icon{display:grid;place-items:center;width:48px;height:48px;border:1px solid var(--line);border-radius:50%}
+    .status-row{display:flex;justify-content:flex-end;align-items:center;margin-top:12px;color:var(--muted);font-size:11px}.timer{font:12px ui-monospace,monospace;letter-spacing:1px}
+    .dial{position:relative;width:290px;height:290px;max-width:100%;margin:24px auto 14px;display:grid;place-items:center}.dial-art{position:absolute;inset:0;width:100%;height:100%;stroke-width:1}.orbit{stroke:#d3fc7926}.progress{stroke:var(--lime);stroke-width:2.5;stroke-dasharray:110 760;transform:rotate(-90deg);transform-origin:160px 160px;filter:drop-shadow(0 0 5px #d3fc7930)}.ticks line{stroke:#414a3b}.ticks line.major{stroke:#8b9979}.center{text-align:center;position:relative}.tempo{display:block;font-size:96px;line-height:1;letter-spacing:-7px;font-weight:650;font-variant-numeric:tabular-nums;padding:0 10px 0 3px;min-height:100px}.unit{font:11px ui-monospace,monospace;letter-spacing:4px;color:var(--muted);margin-top:6px}.dial-controls{display:flex;justify-content:center;gap:58px;margin-top:18px}.step{width:48px;height:48px;border:1px solid var(--line);border-radius:50%;font-size:25px;line-height:1;background:#1b1f1b}.step:active{background:#d3fc7920}.dial.hit .orbit{stroke:#d3fc7960}.dial.hit .center{animation:pulse .14s ease-out}@keyframes pulse{from{transform:scale(1.025)}to{transform:scale(1)}}
+    .speed{padding:0 4px}.range{width:100%;height:32px;accent-color:var(--lime);cursor:pointer}.range-labels{display:flex;justify-content:space-between;font:10px ui-monospace,monospace;color:var(--muted);margin-top:0}.presets{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.preset{min-height:48px;font:12px ui-monospace,monospace;color:var(--muted);border:1px solid var(--line);border-radius:12px}.preset.active{color:var(--lime);background:#d3fc7909;border-color:#d3fc7960}
+    .beat-section{margin-top:25px}.section-heading{display:flex;align-items:center;justify-content:space-between;font-size:12px;margin-bottom:12px}.section-heading small{font:10px ui-monospace,monospace;color:var(--muted)}.beats{display:grid;gap:8px}.beat{height:68px;min-width:0;border:1px solid var(--line);border-radius:14px;background:var(--surface);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px}.beat strong{font:20px ui-monospace,monospace}.beat small{font-size:9px;color:var(--muted)}.beat[data-level="2"] strong,.beat[data-level="2"] small{color:var(--orange)}.beat[data-level="0"] strong{color:#a0a899;text-decoration:line-through}.beat.current{border-color:var(--lime);background:#d3fc7918;box-shadow:inset 0 -3px 0 var(--lime)}.beat.current strong,.beat.current small{color:var(--lime)}
+    .configs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:20px}.config{border:1px solid var(--line);border-radius:16px;min-height:68px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;background:#161a16}.config strong{font-size:13px;font-weight:500}.config small{color:var(--muted);font-size:10px}.config small::after{content:"⌄";padding-left:6px;color:var(--lime)}
+    .transport{margin-top:auto;padding-top:26px}.actions{display:flex;gap:12px}.tap{width:88px;min-height:64px;border:1px solid #697657;border-radius:20px;font:14px ui-monospace,monospace;letter-spacing:2px}.tap:active{color:var(--lime);background:#d3fc7915}.play{flex:1;display:flex;align-items:center;justify-content:center;gap:12px;min-height:64px;border-radius:20px;color:#1a230f;background:var(--lime);font-size:15px;font-weight:650;box-shadow:0 8px 28px #d3fc790a}.play svg{fill:currentColor;stroke-width:0;width:18px;height:18px}.running .play{background:#242d1b;color:var(--lime);border:1px solid #d3fc7980}.hint{min-height:38px;margin:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted);text-align:center;line-height:1.6}.footer{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:10px}.footer span{font:9px ui-monospace,monospace;letter-spacing:2px;color:#a0a899}.sound-toggle{min-height:48px;display:flex;align-items:center;gap:7px;font-size:11px;color:var(--muted)}.sound-toggle svg{width:17px;height:17px}
+    dialog{position:fixed;inset:auto 0 0;margin:0 auto;width:min(440px,100%);max-height:85dvh;overflow:auto;padding:10px 24px max(24px,env(safe-area-inset-bottom,0px));border:1px solid var(--line);border-bottom:0;border-radius:28px 28px 0 0;background:#1b201b;color:var(--text)}dialog::backdrop{background:#000a;backdrop-filter:blur(5px)}.handle{height:4px;width:36px;background:#4a5344;border-radius:3px;margin:0 auto 15px}.sheet-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.sheet-header h2{font-size:20px;margin:0;font-weight:600}.close{font-size:26px;width:48px;height:48px}.description{font-size:12px;color:var(--muted);line-height:1.8;margin:8px 0 18px}.options{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.option{border:1px solid #49533e;min-height:64px;border-radius:14px;text-align:left;padding:12px 16px;font-size:14px}.option small{display:block;font-size:10px;color:var(--muted);margin-top:6px}.option.selected{border-color:var(--lime);background:#d3fc7910;color:var(--lime)}.option.selected::before{content:"✓ ";color:var(--lime)}.setting{display:flex;justify-content:space-between;align-items:center;gap:18px;margin:18px 0;min-height:48px;font-size:13px}.setting input[type=range]{width:55%;accent-color:var(--lime)}.switch{width:52px;height:30px;accent-color:var(--lime)}.reset{min-height:48px;width:100%;border:1px solid #49533e;border-radius:14px;margin-top:12px;font-size:13px}.tempo-input{width:100%;border:1px solid #49533e;background:var(--bg);color:var(--text);border-radius:16px;font-size:42px;padding:14px;text-align:center;font-variant-numeric:tabular-nums}.apply{margin-top:16px;min-height:54px;width:100%;background:var(--lime);color:#1a230f;border-radius:16px;font-weight:650}.error{color:var(--orange);font-size:12px;min-height:18px}
+    .no-animation .dial.hit .center{animation:none}.no-animation .dial.hit .orbit{stroke:#d3fc7926}
+    .hint[hidden]{display:none}
+    header .brand{text-align:center;font-size:17px}header .brand small{font-size:9px;letter-spacing:1px}header .sound-toggle{width:48px;flex-shrink:0;justify-content:center;border:1px solid var(--line);border-radius:50%;color:var(--lime)}header .sound-toggle[aria-pressed="false"]{color:var(--muted)}header .sound-toggle svg{width:21px;height:21px}.restore{min-height:48px;padding:0 8px;color:var(--muted);font-size:11px}.range{height:48px}
+    @media(min-width:600px){body{padding:24px 0}.app{min-height:min(880px,calc(100dvh - 48px));border:1px solid #283022;border-radius:32px;overflow:hidden}dialog{bottom:24px;border-bottom:1px solid var(--line);border-radius:28px}}
+    @media(max-height:900px){header{height:62px}.status-row{margin-top:3px}.dial{width:230px;height:230px;margin:12px auto 8px}.tempo{font-size:80px;min-height:82px}.dial-controls{margin-top:10px}.beat-section{margin-top:18px}.configs{margin-top:14px}.config{min-height:60px}.transport{padding-top:16px}.beat{height:60px}.hint{min-height:32px}}
+    @media(max-height:670px){.dial{width:210px;height:210px;margin:8px auto}.tempo{font-size:70px;min-height:72px}.dial-controls{gap:44px;margin-top:8px}.step{width:48px;height:48px}.beat-section{margin-top:12px}.configs{margin-top:12px}.config{min-height:60px}.transport{padding-top:14px}.presets{margin-top:4px}.hint{min-height:30px}}
+    @media(max-width:350px){.app{padding-left:16px;padding-right:16px}.beats{gap:5px}.beat{border-radius:10px}.beat strong{font-size:17px}.tap{width:76px}.configs{gap:6px}}
+    @media(prefers-reduced-motion:reduce){.dial.hit .center{animation:none}}
+  </style>
+</head>
+<body>
+  <main class="app" id="app">
+    <header><button class="sound-toggle" id="sound" aria-pressed="true" aria-label="声音开启，点击关闭" title="声音开启"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path id="sound-waves" d="M17 8q5 4 0 8"/></svg></button><div class="brand"><b>✳</b> XSTAR<small>节拍器 / METRONOME</small></div><button class="icon" data-sheet="settings" aria-label="节拍器设置"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3" fill="#101211"/><circle cx="15" cy="17" r="3" fill="#101211"/></svg></button></header>
+    <div class="status-row"><span class="timer" id="timer" aria-label="本次练习时长">00:00</span></div>
+    <section class="dial" id="dial" aria-label="速度控制">
+      <svg class="dial-art" viewBox="0 0 320 320" aria-hidden="true"><circle cx="160" cy="160" r="143" stroke="#283022"/><g class="ticks" id="ticks"></g><circle class="orbit" cx="160" cy="160" r="121"/><circle class="progress" id="arc" cx="160" cy="160" r="121"/></svg>
+      <div class="center"><button class="tempo" id="tempo" data-sheet="tempo" aria-label="当前速度 120 BPM，点击输入">120</button><div class="unit">BPM</div></div>
+    </section>
+    <section class="speed" aria-label="调整速度"><input class="range" id="speed" type="range" min="40" max="240" value="120" aria-label="速度 BPM"><div class="range-labels"><span>40</span><span id="tempo-word">MODERATO · 中速</span><span>240</span></div><div class="presets" id="presets"><button class="preset" data-bpm="60">60</button><button class="preset" data-bpm="90">90</button><button class="preset active" data-bpm="120">120</button><button class="preset" data-bpm="160">160</button></div></section>
+    <section class="beat-section"><div class="section-heading"><span>节拍</span><small id="beat-position">4 BEATS / BAR</small></div><div class="beats" id="beats"></div></section>
+    <section class="configs" aria-label="节奏配置"><button class="config" data-sheet="meter"><strong id="meter-label">4/4</strong><small>拍号</small></button><button class="config" data-sheet="subdivision"><strong id="sub-label">♩</strong><small>细分</small></button><button class="config" data-sheet="voice"><strong id="voice-label">电子音</strong><small>音色</small></button></section>
+    <section class="transport"><div class="actions"><button class="tap" id="tap" aria-label="连续点击测量速度">TAP</button><button class="play" id="play"><svg viewBox="0 0 24 24" aria-hidden="true"><path id="play-path" d="M7 4v16l14-8z"/></svg><span id="play-label">开始练习</span></button></div><p class="hint" id="hint" role="status" hidden></p></section>
+  </main>
+  <dialog id="sheet" aria-labelledby="sheet-title"><div class="handle"></div><div class="sheet-header"><h2 id="sheet-title"></h2><button class="close" id="close" aria-label="关闭面板">×</button></div><div id="sheet-content"></div></dialog>
+  <script>
+    'use strict';
+    const $ = id => document.getElementById(id);
+    const meters = ['2/4','3/4','4/4','5/4','6/8','7/8'];
+    const voices = { electronic:'电子音', wood:'木块音', soft:'柔和音' };
+    const subdivisions = {1:['♩','每拍一声'],2:['♫','每拍两声'],3:['3 连音','每拍三声'],4:['♬','每拍四声']};
+    const defaults = () => ({bpm:120,meter:'4/4',subdivision:1,voice:'electronic',volume:.65,sound:true,animation:true,accents:[2,1,1,1]});
+    let state = defaults();
+    try {
+      const saved = JSON.parse(localStorage.getItem('xstar-metronome') || 'null');
+      if(saved && Number.isInteger(saved.bpm) && saved.bpm>=40 && saved.bpm<=240 && meters.includes(saved.meter) && subdivisions[saved.subdivision] && voices[saved.voice] && Number.isFinite(saved.volume) && saved.volume>=0 && saved.volume<=1 && typeof saved.sound==='boolean' && typeof saved.animation==='boolean' && Array.isArray(saved.accents) && saved.accents.length===Number(saved.meter.split('/')[0]) && saved.accents.every(v=>[0,1,2].includes(v))) state=saved;
+    } catch (_) {}
+    let context, running=false, schedulerId, frameId, nextTime=0, step=0, queue=[], activeNodes=new Set(), sessionStart=0, elapsed=0, lastBeat=-1, hitUntil=0, tapTimes=[], currentSheet='', operation=0;
+    const beatCount = () => Number(state.meter.split('/')[0]);
+    function save(){try{localStorage.setItem('xstar-metronome',JSON.stringify(state));}catch(_){}}
+    function render(){
+      $('tempo').textContent=state.bpm; $('tempo').setAttribute('aria-label',`当前速度 ${state.bpm} BPM，点击输入`); $('speed').value=state.bpm;
+      $('tempo-word').textContent=state.bpm<76?'ADAGIO · 慢速':state.bpm<108?'ANDANTE · 行板':state.bpm<140?'MODERATO · 中速':'ALLEGRO · 快速';
+      document.querySelectorAll('[data-bpm]').forEach(b=>{const selected=Number(b.dataset.bpm)===state.bpm;b.classList.toggle('active',selected);b.setAttribute('aria-pressed',selected);});
+      $('meter-label').textContent=state.meter; $('sub-label').textContent=subdivisions[state.subdivision][0];$('voice-label').textContent=voices[state.voice];
+      $('app').classList.toggle('running',running);$('app').classList.toggle('no-animation',!state.animation);$('play-label').textContent=running?'停止练习':'开始练习';$('play-path').setAttribute('d',running?'M6 5h4v14H6zM14 5h4v14h-4z':'M7 4v16l14-8z');
+      $('sound').setAttribute('aria-label',state.sound?'声音开启，点击关闭':'声音关闭，点击开启');$('sound').title=state.sound?'声音开启':'声音关闭';$('sound').setAttribute('aria-pressed',state.sound);$('sound-waves').setAttribute('d',state.sound?'M17 8q5 4 0 8':'M17 9l5 6M22 9l-5 6');
+      $('beat-position').textContent=lastBeat<0?`${beatCount()} BEATS / BAR`:`第 ${lastBeat+1} 拍 / ${beatCount()}`;
+    }
+    function renderBeats(){
+      $('beats').style.gridTemplateColumns=`repeat(${beatCount()},1fr)`;
+      $('beats').innerHTML=state.accents.map((level,i)=>`<button class="beat" data-index="${i}" data-level="${level}" aria-label="第 ${i+1} 拍，${['静音','轻音','重音'][level]}，点击切换"><strong>${i+1}</strong><small>${['静','轻','重'][level]}</small></button>`).join('');
+      if(lastBeat>=0) $('beats').children[lastBeat]?.classList.add('current');
+    }
+    function setBpm(value){state.bpm=Math.max(40,Math.min(240,Math.round(value)));render();save();}
+    function cancelAudio(){for(const node of activeNodes){try{node.stop();}catch(_){}}activeNodes.clear();queue=[];}
+    function resync(){if(!running)return;cancelAudio();step=0;lastBeat=-1;nextTime=context.currentTime+.03;renderBeats();render();}
+    function makeSound(time,level,isSub){
+      if(!state.sound || !level || !state.volume)return;
+      const oscillator=context.createOscillator(),gain=context.createGain();
+      const freq=state.voice==='wood'?900:state.voice==='soft'?660:1400;
+      oscillator.type=state.voice==='wood'?'triangle':'sine';oscillator.frequency.setValueAtTime(freq*(level===2?1.5:1)*(isSub?.72:1),time);
+      if(state.voice==='wood')oscillator.frequency.exponentialRampToValueAtTime(260,time+.045);
+      const duration=state.voice==='soft'?.09:.045;
+      gain.gain.setValueAtTime(.0001,time);gain.gain.exponentialRampToValueAtTime(Math.max(.0002,state.volume*(isSub?.13:level===2?.45:.28)),time+.002);gain.gain.exponentialRampToValueAtTime(.0001,time+duration);
+      oscillator.connect(gain);gain.connect(context.destination);activeNodes.add(oscillator);oscillator.onended=()=>{activeNodes.delete(oscillator);oscillator.disconnect();gain.disconnect();};oscillator.start(time);oscillator.stop(time+duration+.01);
+    }
+    function schedule(){
+      if(!running)return;
+      if(context.state!=='running'){stop();$('hint').textContent='音频已中断，请点击开始恢复';return;}
+      if(nextTime<context.currentTime-.1){cancelAudio();nextTime=context.currentTime+.03;step=0;}
+      while(nextTime<context.currentTime+.1){
+        const sub=step%state.subdivision,beat=Math.floor(step/state.subdivision)%beatCount();
+        makeSound(nextTime,state.accents[beat],sub!==0);if(sub===0)queue.push({time:nextTime,beat});
+        nextTime+=60/state.bpm/state.subdivision;step=(step+1)%(beatCount()*state.subdivision);
+      }
+    }
+    function animate(){
+      if(!running)return;
+      const now=context.currentTime;
+      while(queue.length && queue[0].time<=now){const event=queue.shift();lastBeat=event.beat;hitUntil=now+.12;Array.from($('beats').children).forEach((b,i)=>b.classList.toggle('current',i===lastBeat));$('beat-position').textContent=`第 ${lastBeat+1} 拍 / ${beatCount()}`;$('arc').style.transform=`rotate(${-90+lastBeat*360/beatCount()}deg)`;}
+      $('dial').classList.toggle('hit',now<hitUntil&&state.animation);
+      elapsed=now-sessionStart;updateTimer();frameId=requestAnimationFrame(animate);
+    }
+    function updateTimer(){const seconds=Math.floor(elapsed);$('timer').textContent=`${String(Math.floor(seconds/60)).padStart(2,'0')}:${String(seconds%60).padStart(2,'0')}`;}
+    async function start(){
+      const token=++operation;
+      try{const Audio=context?null:(window.AudioContext||window.webkitAudioContext);if(!context){if(!Audio)throw Error('unavailable');context=new Audio();}await context.resume();if(token!==operation)return;if(context.state!=='running')throw Error('suspended');}
+      catch(_){if(token!==operation)return;$('hint').textContent='声音不可用，已开启视觉练习；点击声音按钮可重试';state.sound=false;save();if(context?.close)context.close().catch(()=>{});context={get currentTime(){return performance.now()/1000;},state:'running',resume:()=>Promise.resolve(),visualOnly:true};}
+      if(token!==operation || document.hidden)return;
+      running=true;elapsed=0;sessionStart=context.currentTime;nextTime=context.currentTime+.04;step=0;lastBeat=-1;render();schedule();schedulerId=setInterval(schedule,25);animate();
+    }
+    function stop(){operation++;running=false;clearInterval(schedulerId);cancelAnimationFrame(frameId);cancelAudio();lastBeat=-1;$('dial').classList.remove('hit');$('arc').style.transform='rotate(-90deg)';renderBeats();render();}
+    $('play').addEventListener('click',()=>running?stop():start());
+    $('speed').addEventListener('input',e=>setBpm(Number(e.target.value)));
+    function restoreDefaults(){stop();state=defaults();tapTimes=[];elapsed=0;updateTimer();renderBeats();render();save();$('hint').textContent='';if($('sheet').open)$('sheet').close();}
+    $('presets').addEventListener('click',e=>{const b=e.target.closest('[data-bpm]');if(b)setBpm(Number(b.dataset.bpm));});
+    $('beats').addEventListener('click',e=>{const button=e.target.closest('.beat');if(!button)return;const i=Number(button.dataset.index);state.accents[i]=(state.accents[i]+2)%3;renderBeats();save();});
+    $('tap').addEventListener('click',()=>{const now=performance.now();if(tapTimes.length&&now-tapTimes[tapTimes.length-1]>2000)tapTimes=[];tapTimes.push(now);if(tapTimes.length>7)tapTimes.shift();if(tapTimes.length>=2){const average=(now-tapTimes[0])/(tapTimes.length-1);setBpm(60000/average);$('hint').textContent=`TAP ${tapTimes.length} 次 · ${state.bpm} BPM`;}else $('hint').textContent='再点击一次，测量你的速度';});
+    $('sound').addEventListener('click',()=>{if(context?.visualOnly){stop();context=null;}state.sound=!state.sound;if(!state.sound)cancelAudio();render();save();});
+    function options(values,current){return `<div class="options">${values.map(v=>`<button class="option ${String(v.value)===String(current)?'selected':''}" data-value="${v.value}" aria-pressed="${String(v.value)===String(current)}">${v.label}${v.detail?`<small>${v.detail}</small>`:''}</button>`).join('')}</div>`;}
+    function showSheet(type){
+      currentSheet=type;
+      const titles={meter:'拍号',subdivision:'节奏细分',voice:'节拍音色',settings:'练习设置',tempo:'输入速度'};$('sheet-title').textContent=titles[type];
+      if(type==='meter')$('sheet-content').innerHTML='<p class="description">分母为每拍音符单位。6/8、7/8 的 BPM 为八分音符速度，默认分别按 3+3、2+2+3 分组重音。</p>'+options(meters.map(v=>({value:v,label:v,detail:v==='6/8'?'3 + 3':v==='7/8'?'2 + 2 + 3':`${v.split('/')[0]} 拍 / 小节`})),state.meter);
+      if(type==='subdivision')$('sheet-content').innerHTML='<p class="description">BPM 保持不变，在每一拍之间增加细分声音。静音拍的细分也保持静音。</p>'+options(Object.entries(subdivisions).map(([k,v])=>({value:k,label:v[0],detail:v[1]})),state.subdivision);
+      if(type==='voice')$('sheet-content').innerHTML='<p class="description">重拍音高更高、声音更突出。选好音色后点击开始，或在播放中试听。</p>'+options(Object.entries(voices).map(([k,v])=>({value:k,label:v,detail:k==='wood'?'短促 · 清晰':k==='soft'?'圆润 · 温和':'明亮 · 精准'})),state.voice);
+      if(type==='settings')$('sheet-content').innerHTML=`<p class="description">保持你的练习习惯，配置自动保存在本机。</p><label class="setting">声音音量 <input id="volume" type="range" min="0" max="100" value="${Math.round(state.volume*100)}"></label><label class="setting">节拍动画 <input class="switch" id="animation" type="checkbox" ${state.animation?'checked':''}></label><p class="description">系统开启减少动态效果时，不显示数字缩放动画。切换到后台会停止本次练习。</p><button class="reset" id="reset">恢复默认配置</button>`;
+      if(type==='tempo')$('sheet-content').innerHTML=`<p class="description">输入 40–240 BPM 的整数速度。</p><form id="tempo-form"><input class="tempo-input" id="tempo-input" type="number" inputmode="numeric" min="40" max="240" step="1" required value="${state.bpm}" aria-label="速度 BPM"><p class="error" id="error" role="alert"></p><button class="apply" type="submit">确认速度</button></form>`;
+      if(!$('sheet').open)$('sheet').showModal();
+      if(type==='tempo'){$('tempo-input').focus();$('tempo-input').select();$('tempo-form').addEventListener('submit',e=>{e.preventDefault();const value=Number($('tempo-input').value);if(!Number.isInteger(value)||value<40||value>240){$('error').textContent='请输入 40–240 之间的整数';return;}setBpm(value);$('sheet').close();});}
+      if(type==='settings'){$('volume').addEventListener('input',e=>{state.volume=Number(e.target.value)/100;save();});$('animation').addEventListener('change',e=>{state.animation=e.target.checked;render();save();});$('reset').textContent='恢复默认设置';$('reset').addEventListener('click',restoreDefaults);}
+    }
+    document.querySelectorAll('[data-sheet]').forEach(b=>b.addEventListener('click',()=>showSheet(b.dataset.sheet)));
+    $('close').addEventListener('click',()=>$('sheet').close());$('sheet').addEventListener('click',e=>{if(e.target===$('sheet')){const r=$('sheet').getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)$('sheet').close();}});
+    $('sheet-content').addEventListener('click',e=>{const option=e.target.closest('[data-value]');if(!option)return;const value=option.dataset.value;if(currentSheet==='meter'){state.meter=value;state.accents=Array.from({length:beatCount()},(_,i)=>i===0||(value==='6/8'&&i===3)||(value==='7/8'&&(i===2||i===4))?2:1);lastBeat=-1;renderBeats();resync();}if(currentSheet==='subdivision'){state.subdivision=Number(value);resync();}if(currentSheet==='voice')state.voice=value;render();save();showSheet(currentSheet);});
+    document.addEventListener('visibilitychange',()=>{if(document.hidden){stop();$('hint').textContent='已暂停，返回后点击开始继续练习';}});
+    window.addEventListener('pagehide',stop);
+    for(let i=0;i<60;i++){const angle=i*Math.PI/30;const radius=i%5===0?132:136;const line=document.createElementNS('http://www.w3.org/2000/svg','line');line.setAttribute('x1',160+radius*Math.sin(angle));line.setAttribute('y1',160-radius*Math.cos(angle));line.setAttribute('x2',160+140*Math.sin(angle));line.setAttribute('y2',160-140*Math.cos(angle));if(i%5===0)line.classList.add('major');$('ticks').appendChild(line);}
+    renderBeats();render();
+  </script>
+</body>
+</html>
